@@ -7,8 +7,8 @@
   --color-border: #e6ddd3;
   --color-muted: #6b6560;
 
-  --font-base: 'Georgia', 'Iowan Old Style', 'Palatino Linotype', serif;
-  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-base: Arial, Helvetica, sans-serif;
+  --font-sans: Arial, Helvetica, sans-serif;
 
   --max-width: 1120px;
   --radius: 10px;
