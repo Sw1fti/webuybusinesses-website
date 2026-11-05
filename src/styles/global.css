@@ -11,7 +11,7 @@
   --font-sans: Arial, Helvetica, sans-serif;
 
   --max-width: 1120px;
-  --radius: 10px;
+  --radius: 3px;
 }
 
 *,
@@ -66,8 +66,10 @@ a:hover {
 
 .section--alt {
   background: #f3ece2;
-  background-image: radial-gradient(circle, rgba(122, 31, 43, 0.08) 1px, transparent 1px);
-  background-size: 22px 22px;
+}
+
+.section--rule {
+  border-top: 1px solid var(--color-border);
 }
 
 .card {
@@ -75,49 +77,35 @@ a:hover {
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   padding: 32px;
-  box-shadow: 0 1px 2px rgba(43, 41, 40, 0.04), 0 8px 20px -12px rgba(43, 41, 40, 0.12);
-  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  transition: border-color 0.15s ease;
 }
 
 a.card:hover {
-  box-shadow: 0 2px 4px rgba(43, 41, 40, 0.06), 0 14px 28px -14px rgba(122, 31, 43, 0.22);
-  transform: translateY(-2px);
+  border-color: var(--color-primary);
 }
 
-.icon-badge {
-  display: inline-flex;
+.eyebrow-rule {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
-  background: #f6e9ea;
-  color: var(--color-primary);
+  gap: 12px;
   margin-bottom: 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.eyebrow-rule::before {
+  content: '';
+  width: 32px;
+  height: 1px;
+  background: var(--color-primary);
   flex-shrink: 0;
 }
 
-.section-heading {
-  display: flex;
-  align-items: baseline;
-  gap: 10px;
-}
-
 h2.with-rule {
-  position: relative;
-  padding-bottom: 18px;
   margin-bottom: 36px;
-}
-
-h2.with-rule::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 56px;
-  height: 3px;
-  background: var(--color-primary);
-  border-radius: 2px;
 }
 
 .btn {
@@ -127,7 +115,7 @@ h2.with-rule::after {
   font-weight: 600;
   text-decoration: none;
   padding: 14px 28px;
-  border-radius: 8px;
+  border-radius: var(--radius);
   border: 2px solid var(--color-primary);
   cursor: pointer;
   transition: background 0.15s ease, color 0.15s ease;
@@ -212,7 +200,7 @@ textarea {
   font-size: 1rem;
   padding: 12px 14px;
   border: 1px solid var(--color-border);
-  border-radius: 6px;
+  border-radius: var(--radius);
   background: #fff;
   color: var(--color-charcoal);
 }

@@ -2,40 +2,36 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SubmissionForm from '../components/SubmissionForm.astro';
-import Icon from '../components/Icon.astro';
 
 const allArticles = await getCollection('articles');
 const latestArticles = allArticles
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
-const sectors: { name: string; icon: 'activity' | 'heart' | 'home' | 'building' | 'credit-card' | 'monitor' | 'trending-up' | 'layers' | 'bar-chart' | 'map' | 'leaf' }[] = [
-  { name: 'Fitness', icon: 'activity' },
-  { name: 'Health Tech', icon: 'heart' },
-  { name: 'Real Estate Agencies and Rent Rolls', icon: 'home' },
-  { name: 'Property – Commercial and Residential', icon: 'building' },
-  { name: 'Financial Services', icon: 'credit-card' },
-  { name: 'Technology', icon: 'monitor' },
-  { name: 'Venture Capital', icon: 'trending-up' },
-  { name: 'Funds', icon: 'layers' },
-  { name: 'Public Equities', icon: 'bar-chart' },
-  { name: 'Infrastructure', icon: 'map' },
-  { name: 'Green Energy', icon: 'leaf' },
+const sectors = [
+  'Fitness',
+  'Health Tech',
+  'Real Estate Agencies and Rent Rolls',
+  'Property – Commercial and Residential',
+  'Financial Services',
+  'Technology',
+  'Venture Capital',
+  'Funds',
+  'Public Equities',
+  'Infrastructure',
+  'Green Energy',
 ];
 
 const valuePoints = [
   {
-    icon: 'dollar' as const,
     title: 'No broker fees',
     body: 'Deal directly with the buyer. There is no commission coming out of your sale price.',
   },
   {
-    icon: 'bolt' as const,
     title: 'Fast movers',
     body: "We tell you within one week whether we're interested, so you're not left waiting.",
   },
   {
-    icon: 'tool' as const,
     title: 'Operators',
     body: "We've acquired, run and built businesses ourselves, so we understand what we're taking on.",
   },
@@ -43,17 +39,14 @@ const valuePoints = [
 
 const steps = [
   {
-    icon: 'document' as const,
     title: 'Submit',
     body: 'Tell us about your business using our short online form. It takes a few minutes.',
   },
   {
-    icon: 'check' as const,
     title: 'We review',
     body: "We look closely at your business and what you've told us, with no pressure or obligation on your part.",
   },
   {
-    icon: 'clock' as const,
     title: 'We respond within one week',
     body: "You'll hear back from us within a week on whether we'd like to take the conversation further.",
   },
@@ -103,26 +96,26 @@ const faqs = [
         </p>
         <a href="/submit" class="btn btn-primary">Submit Your Business</a>
       </div>
-      <div class="hero-graphic" aria-hidden="true">
-        <svg viewBox="0 0 320 320" fill="none">
-          <circle cx="160" cy="160" r="120" stroke="#7A1F2B" stroke-opacity="0.15" stroke-width="1.5" />
-          <circle cx="160" cy="160" r="88" stroke="#7A1F2B" stroke-opacity="0.22" stroke-width="1.5" />
-          <circle cx="160" cy="160" r="56" stroke="#7A1F2B" stroke-opacity="0.3" stroke-width="1.5" />
-          <path d="M60 210 L120 150 L155 180 L245 90" stroke="#2B2928" stroke-opacity="0.35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-          <circle cx="245" cy="90" r="6" fill="#7A1F2B" />
-          <circle cx="120" cy="150" r="5" fill="#2B2928" fill-opacity="0.5" />
-          <circle cx="60" cy="210" r="5" fill="#2B2928" fill-opacity="0.5" />
-        </svg>
+      <div class="hero-facts">
+        <div class="hero-fact">
+          <p class="hero-fact-label">No broker fees</p>
+        </div>
+        <div class="hero-fact">
+          <p class="hero-fact-label">Response within one week</p>
+        </div>
+        <div class="hero-fact">
+          <p class="hero-fact-label">Buyers who operate, not flip</p>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section">
+  <section class="section section--rule">
     <div class="container">
-      <div class="grid grid-3">
-        {valuePoints.map((point) => (
-          <div class="card">
-            <div class="icon-badge"><Icon name={point.icon} /></div>
+      <div class="value-row">
+        {valuePoints.map((point, index) => (
+          <div class="value-col">
+            <p class="value-number">{String(index + 1).padStart(2, '0')}</p>
             <h3>{point.title}</h3>
             <p>{point.body}</p>
           </div>
@@ -132,10 +125,12 @@ const faqs = [
   </section>
 
   <section class="section section--alt">
-    <div class="container">
-      <p class="eyebrow">Who We Are</p>
-      <h2 class="with-rule">Backed by capital, run by operators</h2>
+    <div class="container who-we-are-layout">
+      <div class="who-we-are-label">
+        <p class="eyebrow-rule">Who We Are</p>
+      </div>
       <div class="who-we-are">
+        <h2>Backed by capital, run by operators</h2>
         <p>
           We're backed by private capital and a group of business operators who've bought, run and grown businesses
           ourselves — not a fund looking to flip assets, and not a broker looking to collect a fee along the way.
@@ -151,27 +146,26 @@ const faqs = [
 
   <section class="section">
     <div class="container">
-      <p class="eyebrow">How It Works</p>
+      <p class="eyebrow-rule">How It Works</p>
       <h2 class="with-rule">Three simple steps</h2>
-      <div class="grid grid-3 steps-grid">
+      <ol class="steps-list">
         {steps.map((step, index) => (
-          <div class="step">
-            <div class="step-top">
-              <div class="icon-badge"><Icon name={step.icon} /></div>
-              <div class="step-number">{index + 1}</div>
+          <li class="steps-item">
+            <span class="steps-number">{String(index + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.body}</p>
             </div>
-            <h3>{step.title}</h3>
-            <p>{step.body}</p>
-          </div>
+          </li>
         ))}
-      </div>
-      <a href="/how-it-works" class="link-more">Learn more about our process <Icon name="arrow" size={16} /></a>
+      </ol>
+      <a href="/how-it-works" class="link-more">Learn more about our process &rarr;</a>
     </div>
   </section>
 
   <section class="section section--alt">
     <div class="container">
-      <p class="eyebrow">Our Focus</p>
+      <p class="eyebrow-rule">Our Focus</p>
       <h2 class="with-rule">Sectors We've Acquired and Built In</h2>
       <p class="sectors-intro">
         We focus on Australian asset-based businesses. For technology businesses, we're open to opportunities
@@ -179,10 +173,7 @@ const faqs = [
       </p>
       <ul class="sectors-list">
         {sectors.map((sector) => (
-          <li>
-            <span class="sector-icon"><Icon name={sector.icon} size={20} /></span>
-            <span>{sector.name}</span>
-          </li>
+          <li>{sector}</li>
         ))}
       </ul>
     </div>
@@ -191,25 +182,27 @@ const faqs = [
   {latestArticles.length > 0 && (
     <section class="section">
       <div class="container">
-        <p class="eyebrow">Resources</p>
+        <p class="eyebrow-rule">Resources</p>
         <h2 class="with-rule">From our resources</h2>
-        <div class="grid grid-3">
+        <ul class="resource-list">
           {latestArticles.map((article) => (
-            <a class="card article-preview" href={`/resources/${article.id}`}>
-              <p class="eyebrow">{article.data.category}</p>
-              <h3>{article.data.title}</h3>
-              <p>{article.data.description}</p>
-            </a>
+            <li class="resource-item">
+              <a href={`/resources/${article.id}`}>
+                <span class="resource-category">{article.data.category}</span>
+                <h3>{article.data.title}</h3>
+                <p>{article.data.description}</p>
+              </a>
+            </li>
           ))}
-        </div>
-        <a href="/resources" class="link-more">Browse all resources <Icon name="arrow" size={16} /></a>
+        </ul>
+        <a href="/resources" class="link-more">Browse all resources &rarr;</a>
       </div>
     </section>
   )}
 
   <section class="section section--alt">
     <div class="container container--narrow">
-      <p class="eyebrow">Common Questions</p>
+      <p class="eyebrow-rule">Common Questions</p>
       <h2 class="with-rule">Frequently asked questions</h2>
       <div class="faq-list">
         {faqs.map((faq) => (
@@ -224,7 +217,7 @@ const faqs = [
 
   <section class="section" id="submit">
     <div class="container">
-      <p class="eyebrow">Get Started</p>
+      <p class="eyebrow-rule">Get Started</p>
       <h2 class="with-rule">Submit Your Business</h2>
       <SubmissionForm idPrefix="home" />
     </div>
@@ -235,91 +228,142 @@ const faqs = [
   .hero {
     padding-top: 72px;
     padding-bottom: 56px;
-    overflow: hidden;
   }
 
   .hero-inner {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-  }
-
-  .hero-copy {
-    flex: 1;
-    min-width: 0;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 56px;
+    align-items: start;
   }
 
   .hero h1 {
-    max-width: 680px;
+    max-width: 640px;
   }
 
   .hero-sub {
-    max-width: 580px;
+    max-width: 560px;
     font-size: 1.2rem;
     color: var(--color-muted);
   }
 
-  .hero-graphic {
-    flex-shrink: 0;
-    width: 260px;
+  .hero-facts {
+    border-left: 1px solid var(--color-border);
+    padding-left: 32px;
+    display: grid;
+    gap: 24px;
+    margin-top: 6px;
   }
 
-  .hero-graphic svg {
-    width: 100%;
-    height: auto;
+  .hero-fact-label {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.05rem;
   }
 
   @media (max-width: 900px) {
-    .hero-graphic {
-      display: none;
+    .hero-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-facts {
+      border-left: none;
+      border-top: 1px solid var(--color-border);
+      padding-left: 0;
+      padding-top: 24px;
     }
   }
 
-  .who-we-are {
-    max-width: 760px;
+  .value-row {
     display: grid;
-    gap: 20px;
+    grid-template-columns: repeat(3, 1fr);
   }
 
-  .who-we-are p {
-    font-size: 1.08rem;
-    margin: 0;
+  .value-col {
+    padding: 0 32px;
+    border-left: 1px solid var(--color-border);
   }
 
-  .step {
-    background: var(--color-card);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
-    padding: 32px;
-    box-shadow: 0 1px 2px rgba(43, 41, 40, 0.04), 0 8px 20px -12px rgba(43, 41, 40, 0.12);
+  .value-col:first-child {
+    padding-left: 0;
+    border-left: none;
   }
 
-  .step-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .step-top .icon-badge {
-    margin-bottom: 0;
-  }
-
-  .step-number {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: var(--color-bg);
-    border: 1px solid var(--color-border);
-    color: var(--color-muted);
+  .value-number {
+    font-size: 0.95rem;
     font-weight: 700;
-    font-size: 0.9rem;
+    color: var(--color-primary);
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
   }
 
-  .step h3 {
-    margin-top: 20px;
+  @media (max-width: 900px) {
+    .value-row {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    .value-col {
+      padding: 0;
+      border-left: none;
+      border-top: 1px solid var(--color-border);
+      padding-top: 24px;
+    }
+
+    .value-col:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+  }
+
+  .who-we-are-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 40px;
+  }
+
+  .who-we-are {
+    max-width: 700px;
+  }
+
+  @media (max-width: 760px) {
+    .who-we-are-layout {
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+  }
+
+  .steps-list {
+    list-style: none;
+    margin: 0 0 32px;
+    padding: 0;
+  }
+
+  .steps-item {
+    display: flex;
+    gap: 28px;
+    padding: 28px 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .steps-item:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .steps-number {
+    flex-shrink: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    width: 48px;
+  }
+
+  .steps-item h3 {
+    margin-bottom: 8px;
+  }
+
+  .steps-item p {
+    margin: 0;
   }
 
   .sectors-intro {
@@ -331,33 +375,15 @@ const faqs = [
     list-style: none;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+    gap: 0 32px;
     padding: 0;
     margin: 32px 0 0;
   }
 
   .sectors-list li {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    background: var(--color-card);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 16px 20px;
+    padding: 14px 0;
+    border-top: 1px solid var(--color-border);
     font-weight: 600;
-    box-shadow: 0 1px 2px rgba(43, 41, 40, 0.04);
-  }
-
-  .sector-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    background: #f6e9ea;
-    color: var(--color-primary);
-    flex-shrink: 0;
   }
 
   @media (max-width: 900px) {
@@ -372,25 +398,51 @@ const faqs = [
     }
   }
 
-  .article-preview {
+  .resource-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .resource-item {
+    border-top: 1px solid var(--color-border);
+    padding: 28px 0;
+  }
+
+  .resource-item:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .resource-item a {
     display: block;
     text-decoration: none;
     color: inherit;
   }
 
-  .article-preview h3 {
-    color: var(--color-charcoal);
-  }
-
-  .article-preview:hover h3 {
+  .resource-category {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.8rem;
+    font-weight: 700;
     color: var(--color-primary);
   }
 
+  .resource-item h3 {
+    margin: 10px 0 8px;
+  }
+
+  .resource-item:hover h3 {
+    color: var(--color-primary);
+  }
+
+  .resource-item p {
+    margin: 0;
+    color: var(--color-muted);
+  }
+
   .link-more {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 32px;
+    display: inline-block;
+    margin-top: 8px;
     font-weight: 600;
     text-decoration: none;
   }
@@ -400,15 +452,16 @@ const faqs = [
   }
 
   .faq-list {
-    display: grid;
-    gap: 12px;
+    margin: 0;
   }
 
   .faq-item {
-    background: var(--color-card);
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    padding: 20px 24px;
+    border-top: 1px solid var(--color-border);
+    padding: 20px 0;
+  }
+
+  .faq-item:last-child {
+    border-bottom: 1px solid var(--color-border);
   }
 
   .faq-item summary {

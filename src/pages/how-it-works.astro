@@ -35,7 +35,7 @@ const steps = [
 >
   <section class="section">
     <div class="container container--narrow">
-      <p class="eyebrow">How It Works</p>
+      <p class="eyebrow-rule">How It Works</p>
       <h1>A simple, direct process</h1>
       <p class="lead">
         We've designed our process to be straightforward and respectful of your time. There's no obligation at any
@@ -45,7 +45,7 @@ const steps = [
       <ol class="timeline">
         {steps.map((step, index) => (
           <li class="timeline-item">
-            <div class="timeline-marker">{index + 1}</div>
+            <span class="timeline-marker">{String(index + 1).padStart(2, '0')}</span>
             <div class="timeline-content">
               <h2>{step.title}</h2>
               <p>{step.body}</p>
@@ -93,38 +93,22 @@ const steps = [
   }
 
   .timeline-item {
-    position: relative;
     display: flex;
-    gap: 24px;
-    padding-bottom: 36px;
+    gap: 28px;
+    padding: 28px 0;
+    border-top: 1px solid var(--color-border);
   }
 
-  .timeline-item::before {
-    content: '';
-    position: absolute;
-    left: 19px;
-    top: 44px;
-    bottom: 0;
-    width: 2px;
-    background: var(--color-border);
-  }
-
-  .timeline-item:last-child::before {
-    display: none;
+  .timeline-item:last-child {
+    border-bottom: 1px solid var(--color-border);
   }
 
   .timeline-marker {
     flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: var(--color-primary);
-    color: #fff;
+    width: 48px;
+    font-size: 1.1rem;
     font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1;
+    color: var(--color-primary);
   }
 
   .timeline-content h2 {
