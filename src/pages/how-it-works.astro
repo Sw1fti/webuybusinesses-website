@@ -1,5 +1,32 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const steps = [
+  {
+    title: 'You submit your business',
+    body: "It starts with a short online form. We ask for the basics — your name, contact details, and a brief description of your business — along with some optional information that helps us respond faster, such as your industry, location, annual profit and how long you've been trading. If you have financials or a pitch deck ready, you can attach them, but it's entirely optional at this stage.",
+  },
+  {
+    title: 'We review your submission',
+    body: "Our team looks closely at what you've shared. We consider the industry, the financial profile, how the business operates, and whether it's a strong fit for us as operators. We don't outsource this review to a broker or a junior analyst — the people assessing your business are the same people who would ultimately be involved in acquiring and running it.",
+  },
+  {
+    title: 'We respond within one week',
+    body: "You'll hear back from us within one week of submitting, regardless of our decision. If we're interested, we'll reach out to talk through next steps, including a general indication of value, timeline and how a transaction might be structured. If it's not a fit for us right now, we'll let you know clearly and promptly, rather than leaving you waiting.",
+  },
+  {
+    title: 'A direct conversation',
+    body: "If there's mutual interest, we move into a more detailed conversation — understanding your business further, answering your questions about us, and working out whether the fundamentals of a deal make sense for both sides. We encourage you to involve your own accountant and lawyer from this point, and we're comfortable working alongside your advisers throughout.",
+  },
+  {
+    title: 'Due diligence and agreement',
+    body: "Once we've agreed on the broad terms, we move into due diligence — a closer look at your financials, contracts and operations — alongside drafting a formal agreement. We aim to keep this process efficient and to avoid unnecessary delays, while still being thorough enough to protect both parties.",
+  },
+  {
+    title: 'Settlement and transition',
+    body: "At settlement, ownership transfers and funds are released. We work with you on a transition period that suits your circumstances — whether that's a short handover or a longer period of involvement, depending on what works best for you, your staff, and the ongoing operation of the business.",
+  },
+];
 ---
 
 <BaseLayout
@@ -15,65 +42,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         stage, and we never pressure owners into a decision.
       </p>
 
-      <div class="step-detail">
-        <h2>1. You submit your business</h2>
-        <p>
-          It starts with a short online form. We ask for the basics — your name, contact details, and a brief
-          description of your business — along with some optional information that helps us respond faster, such as
-          your industry, location, annual profit and how long you've been trading. If you have financials or a
-          pitch deck ready, you can attach them, but it's entirely optional at this stage.
-        </p>
-      </div>
+      <ol class="timeline">
+        {steps.map((step, index) => (
+          <li class="timeline-item">
+            <div class="timeline-marker">{index + 1}</div>
+            <div class="timeline-content">
+              <h2>{step.title}</h2>
+              <p>{step.body}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
 
-      <div class="step-detail">
-        <h2>2. We review your submission</h2>
-        <p>
-          Our team looks closely at what you've shared. We consider the industry, the financial profile, how the
-          business operates, and whether it's a strong fit for us as operators. We don't outsource this review to a
-          broker or a junior analyst — the people assessing your business are the same people who would ultimately
-          be involved in acquiring and running it.
-        </p>
-      </div>
-
-      <div class="step-detail">
-        <h2>3. We respond within one week</h2>
-        <p>
-          You'll hear back from us within one week of submitting, regardless of our decision. If we're interested,
-          we'll reach out to arrange a confidential conversation and talk through next steps, including a general
-          indication of value, timeline and how a transaction might be structured. If it's not a fit for us right
-          now, we'll let you know clearly and promptly, rather than leaving you waiting.
-        </p>
-      </div>
-
-      <div class="step-detail">
-        <h2>4. A direct conversation</h2>
-        <p>
-          If there's mutual interest, we move into a more detailed conversation — understanding your business
-          further, answering your questions about us, and working out whether the fundamentals of a deal make sense
-          for both sides. We encourage you to involve your own accountant and lawyer from this point, and we're
-          comfortable working alongside your advisers throughout.
-        </p>
-      </div>
-
-      <div class="step-detail">
-        <h2>5. Due diligence and agreement</h2>
-        <p>
-          Once we've agreed on the broad terms, we move into due diligence — a closer look at your financials,
-          contracts and operations — alongside drafting a formal agreement. We aim to keep this process efficient
-          and to avoid unnecessary delays, while still being thorough enough to protect both parties.
-        </p>
-      </div>
-
-      <div class="step-detail">
-        <h2>6. Settlement and transition</h2>
-        <p>
-          At settlement, ownership transfers and funds are released. We work with you on a transition period that
-          suits your circumstances — whether that's a short handover or a longer period of involvement, depending
-          on what works best for you, your staff, and the ongoing operation of the business.
-        </p>
-      </div>
-
-      <h2>Why selling direct saves broker fees</h2>
+      <h2 class="with-rule">Why selling direct saves broker fees</h2>
       <p>
         A business broker typically charges a commission of around 5% to 10% of the sale price. When you deal with
         us directly, that cost disappears — there's no broker fee coming out of what you're paid. You'll likely
@@ -105,8 +86,54 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--color-muted);
   }
 
-  .step-detail {
-    margin: 40px 0;
+  .timeline {
+    list-style: none;
+    margin: 48px 0;
+    padding: 0;
+  }
+
+  .timeline-item {
+    position: relative;
+    display: flex;
+    gap: 24px;
+    padding-bottom: 36px;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: 19px;
+    top: 44px;
+    bottom: 0;
+    width: 2px;
+    background: var(--color-border);
+  }
+
+  .timeline-item:last-child::before {
+    display: none;
+  }
+
+  .timeline-marker {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+  }
+
+  .timeline-content h2 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+
+  .timeline-content p {
+    margin: 0;
   }
 
   .cta {

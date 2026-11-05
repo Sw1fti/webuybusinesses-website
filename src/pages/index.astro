@@ -2,36 +2,40 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SubmissionForm from '../components/SubmissionForm.astro';
+import Icon from '../components/Icon.astro';
 
 const allArticles = await getCollection('articles');
 const latestArticles = allArticles
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
-const sectors = [
-  'Fitness',
-  'Health Tech',
-  'Real Estate Agencies and Rent Rolls',
-  'Property – Commercial and Residential',
-  'Financial Services',
-  'Technology',
-  'Venture Capital',
-  'Funds',
-  'Public Equities',
-  'Infrastructure',
-  'Green Energy',
+const sectors: { name: string; icon: 'activity' | 'heart' | 'home' | 'building' | 'credit-card' | 'monitor' | 'trending-up' | 'layers' | 'bar-chart' | 'map' | 'leaf' }[] = [
+  { name: 'Fitness', icon: 'activity' },
+  { name: 'Health Tech', icon: 'heart' },
+  { name: 'Real Estate Agencies and Rent Rolls', icon: 'home' },
+  { name: 'Property – Commercial and Residential', icon: 'building' },
+  { name: 'Financial Services', icon: 'credit-card' },
+  { name: 'Technology', icon: 'monitor' },
+  { name: 'Venture Capital', icon: 'trending-up' },
+  { name: 'Funds', icon: 'layers' },
+  { name: 'Public Equities', icon: 'bar-chart' },
+  { name: 'Infrastructure', icon: 'map' },
+  { name: 'Green Energy', icon: 'leaf' },
 ];
 
 const valuePoints = [
   {
+    icon: 'dollar' as const,
     title: 'No broker fees',
     body: 'Deal directly with the buyer. There is no commission coming out of your sale price.',
   },
   {
+    icon: 'bolt' as const,
     title: 'Fast movers',
     body: "We tell you within one week whether we're interested, so you're not left waiting.",
   },
   {
+    icon: 'tool' as const,
     title: 'Operators',
     body: "We've acquired, run and built businesses ourselves, so we understand what we're taking on.",
   },
@@ -39,16 +43,47 @@ const valuePoints = [
 
 const steps = [
   {
+    icon: 'document' as const,
     title: 'Submit',
     body: 'Tell us about your business using our short online form. It takes a few minutes.',
   },
   {
+    icon: 'check' as const,
     title: 'We review',
     body: "We look closely at your business and what you've told us, with no pressure or obligation on your part.",
   },
   {
+    icon: 'clock' as const,
     title: 'We respond within one week',
     body: "You'll hear back from us within a week on whether we'd like to take the conversation further.",
+  },
+];
+
+const faqs = [
+  {
+    question: 'Do you charge any fees?',
+    answer:
+      "No. We're the buyer, not a broker, so there's no commission or success fee for you to pay. You may still want your own accountant or lawyer involved, which is a cost you'd have in any sale.",
+  },
+  {
+    question: 'Is there any obligation once I submit?',
+    answer:
+      "None. Submitting your business starts a conversation, nothing more. If we're not a fit, we'll tell you clearly and promptly, and that's the end of it.",
+  },
+  {
+    question: 'What happens to my information?',
+    answer:
+      "Your submission is reviewed by the people who'd actually be involved in a potential acquisition, not passed around widely. See our Privacy Policy for the detail.",
+  },
+  {
+    question: 'What kind of businesses are you looking for?',
+    answer:
+      "Primarily Australian, asset-based businesses across the sectors listed below. For technology businesses, we also look at opportunities globally.",
+  },
+  {
+    question: 'Do I need to prepare anything before I submit?',
+    answer:
+      "No — a short description is enough to start. If you'd like to gauge your own readiness first, our Sale Readiness Checklist is a useful place to begin.",
   },
 ];
 ---
@@ -58,14 +93,27 @@ const steps = [
   description="We buy Australian businesses directly from owners — simply, quickly, and the right way. No broker fees, a response within one week."
 >
   <section class="hero section">
-    <div class="container">
-      <h1>We buy businesses. Simply, quickly, and the right way.</h1>
-      <p class="hero-sub">
-        We're backed by private capital and business operators who look to continue operating the businesses we
-        buy. If you're an Australian business owner considering a sale, we'd welcome a direct, no-pressure
-        conversation.
-      </p>
-      <a href="/submit" class="btn btn-primary">Submit Your Business</a>
+    <div class="container hero-inner">
+      <div class="hero-copy">
+        <h1>We buy businesses. Simply, quickly, and the right way.</h1>
+        <p class="hero-sub">
+          We're backed by private capital and business operators who look to continue operating the businesses we
+          buy. If you're an Australian business owner considering a sale, we'd welcome a direct, no-pressure
+          conversation.
+        </p>
+        <a href="/submit" class="btn btn-primary">Submit Your Business</a>
+      </div>
+      <div class="hero-graphic" aria-hidden="true">
+        <svg viewBox="0 0 320 320" fill="none">
+          <circle cx="160" cy="160" r="120" stroke="#7A1F2B" stroke-opacity="0.15" stroke-width="1.5" />
+          <circle cx="160" cy="160" r="88" stroke="#7A1F2B" stroke-opacity="0.22" stroke-width="1.5" />
+          <circle cx="160" cy="160" r="56" stroke="#7A1F2B" stroke-opacity="0.3" stroke-width="1.5" />
+          <path d="M60 210 L120 150 L155 180 L245 90" stroke="#2B2928" stroke-opacity="0.35" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          <circle cx="245" cy="90" r="6" fill="#7A1F2B" />
+          <circle cx="120" cy="150" r="5" fill="#2B2928" fill-opacity="0.5" />
+          <circle cx="60" cy="210" r="5" fill="#2B2928" fill-opacity="0.5" />
+        </svg>
+      </div>
     </div>
   </section>
 
@@ -74,6 +122,7 @@ const steps = [
       <div class="grid grid-3">
         {valuePoints.map((point) => (
           <div class="card">
+            <div class="icon-badge"><Icon name={point.icon} /></div>
             <h3>{point.title}</h3>
             <p>{point.body}</p>
           </div>
@@ -84,42 +133,66 @@ const steps = [
 
   <section class="section section--alt">
     <div class="container">
-      <p class="eyebrow">How It Works</p>
-      <h2>Three simple steps</h2>
-      <div class="grid grid-3">
-        {steps.map((step, index) => (
-          <div class="step">
-            <div class="step-number">{index + 1}</div>
-            <h3>{step.title}</h3>
-            <p>{step.body}</p>
-          </div>
-        ))}
+      <p class="eyebrow">Who We Are</p>
+      <h2 class="with-rule">Backed by capital, run by operators</h2>
+      <div class="who-we-are">
+        <p>
+          We're backed by private capital and a group of business operators who've bought, run and grown businesses
+          ourselves — not a fund looking to flip assets, and not a broker looking to collect a fee along the way.
+        </p>
+        <p>
+          When we acquire a business, we look to continue operating it. That shapes how we evaluate every
+          submission: we're thinking about the team, the customers and the day-to-day reality of the business, not
+          just the numbers on a page.
+        </p>
       </div>
-      <a href="/how-it-works" class="link-more">Learn more about our process &rarr;</a>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
+      <p class="eyebrow">How It Works</p>
+      <h2 class="with-rule">Three simple steps</h2>
+      <div class="grid grid-3 steps-grid">
+        {steps.map((step, index) => (
+          <div class="step">
+            <div class="step-top">
+              <div class="icon-badge"><Icon name={step.icon} /></div>
+              <div class="step-number">{index + 1}</div>
+            </div>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </div>
+        ))}
+      </div>
+      <a href="/how-it-works" class="link-more">Learn more about our process <Icon name="arrow" size={16} /></a>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
       <p class="eyebrow">Our Focus</p>
-      <h2>Sectors We've Acquired and Built In</h2>
+      <h2 class="with-rule">Sectors We've Acquired and Built In</h2>
       <p class="sectors-intro">
         We focus on Australian asset-based businesses. For technology businesses, we're open to opportunities
         globally.
       </p>
       <ul class="sectors-list">
         {sectors.map((sector) => (
-          <li>{sector}</li>
+          <li>
+            <span class="sector-icon"><Icon name={sector.icon} size={20} /></span>
+            <span>{sector.name}</span>
+          </li>
         ))}
       </ul>
     </div>
   </section>
 
   {latestArticles.length > 0 && (
-    <section class="section section--alt">
+    <section class="section">
       <div class="container">
         <p class="eyebrow">Resources</p>
-        <h2>From our resources</h2>
+        <h2 class="with-rule">From our resources</h2>
         <div class="grid grid-3">
           {latestArticles.map((article) => (
             <a class="card article-preview" href={`/resources/${article.id}`}>
@@ -129,15 +202,30 @@ const steps = [
             </a>
           ))}
         </div>
-        <a href="/resources" class="link-more">Browse all resources &rarr;</a>
+        <a href="/resources" class="link-more">Browse all resources <Icon name="arrow" size={16} /></a>
       </div>
     </section>
   )}
 
+  <section class="section section--alt">
+    <div class="container container--narrow">
+      <p class="eyebrow">Common Questions</p>
+      <h2 class="with-rule">Frequently asked questions</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <details class="faq-item">
+            <summary>{faq.question}</summary>
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="section" id="submit">
     <div class="container">
       <p class="eyebrow">Get Started</p>
-      <h2>Submit Your Business</h2>
+      <h2 class="with-rule">Submit Your Business</h2>
       <SubmissionForm idPrefix="home" />
     </div>
   </section>
@@ -145,18 +233,57 @@ const steps = [
 
 <style>
   .hero {
-    padding-top: 80px;
-    padding-bottom: 48px;
+    padding-top: 72px;
+    padding-bottom: 56px;
+    overflow: hidden;
+  }
+
+  .hero-inner {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+  }
+
+  .hero-copy {
+    flex: 1;
+    min-width: 0;
   }
 
   .hero h1 {
-    max-width: 780px;
+    max-width: 680px;
   }
 
   .hero-sub {
-    max-width: 620px;
+    max-width: 580px;
     font-size: 1.2rem;
     color: var(--color-muted);
+  }
+
+  .hero-graphic {
+    flex-shrink: 0;
+    width: 260px;
+  }
+
+  .hero-graphic svg {
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 900px) {
+    .hero-graphic {
+      display: none;
+    }
+  }
+
+  .who-we-are {
+    max-width: 760px;
+    display: grid;
+    gap: 20px;
+  }
+
+  .who-we-are p {
+    font-size: 1.08rem;
+    margin: 0;
   }
 
   .step {
@@ -164,19 +291,35 @@ const steps = [
     border: 1px solid var(--color-border);
     border-radius: var(--radius);
     padding: 32px;
+    box-shadow: 0 1px 2px rgba(43, 41, 40, 0.04), 0 8px 20px -12px rgba(43, 41, 40, 0.12);
+  }
+
+  .step-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .step-top .icon-badge {
+    margin-bottom: 0;
   }
 
   .step-number {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
-    background: var(--color-primary);
-    color: #fff;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    color: var(--color-muted);
     font-weight: 700;
-    margin-bottom: 16px;
+    font-size: 0.9rem;
+  }
+
+  .step h3 {
+    margin-top: 20px;
   }
 
   .sectors-intro {
@@ -194,11 +337,27 @@ const steps = [
   }
 
   .sectors-list li {
+    display: flex;
+    align-items: center;
+    gap: 14px;
     background: var(--color-card);
     border: 1px solid var(--color-border);
     border-radius: 8px;
     padding: 16px 20px;
     font-weight: 600;
+    box-shadow: 0 1px 2px rgba(43, 41, 40, 0.04);
+  }
+
+  .sector-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #f6e9ea;
+    color: var(--color-primary);
+    flex-shrink: 0;
   }
 
   @media (max-width: 900px) {
@@ -228,9 +387,59 @@ const steps = [
   }
 
   .link-more {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     margin-top: 32px;
     font-weight: 600;
     text-decoration: none;
+  }
+
+  .container--narrow {
+    max-width: 760px;
+  }
+
+  .faq-list {
+    display: grid;
+    gap: 12px;
+  }
+
+  .faq-item {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+
+  .faq-item summary {
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1.05rem;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::after {
+    content: '+';
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--color-primary);
+    margin-left: 16px;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] summary::after {
+    content: '\2212';
+  }
+
+  .faq-item p {
+    margin: 14px 0 0;
+    color: var(--color-muted);
   }
 </style>
