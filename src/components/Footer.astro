@@ -1,0 +1,66 @@
+---
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+    <div class="site-footer__brand">We Buy Businesses</div>
+    <nav aria-label="Footer">
+      <ul>
+        <li><a href="/resources">Resources</a></li>
+        <li><a href="/submit">Submit Your Business</a></li>
+        <li><a href="/privacy-policy">Privacy Policy</a></li>
+        <li><a href="/disclaimer">Disclaimer</a></li>
+      </ul>
+    </nav>
+    <p class="site-footer__copy">&copy; {year} We Buy Businesses</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+    background: #f3ece2;
+    padding: 40px 0;
+    margin-top: 80px;
+  }
+
+  .site-footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .site-footer__brand {
+    font-family: var(--font-base);
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .site-footer nav ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-footer nav a {
+    color: var(--color-charcoal);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  .site-footer nav a:hover {
+    color: var(--color-primary);
+  }
+
+  .site-footer__copy {
+    margin: 0;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+</style>

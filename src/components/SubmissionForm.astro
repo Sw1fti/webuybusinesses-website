@@ -1,0 +1,136 @@
+---
+interface Props {
+  idPrefix?: string;
+}
+
+const { idPrefix = 'main' } = Astro.props;
+
+const industries = [
+  'Fitness',
+  'Health Tech',
+  'Real Estate Agencies and Rent Rolls',
+  'Property – Commercial',
+  'Property – Residential',
+  'Financial Services',
+  'Technology',
+  'Venture Capital',
+  'Funds',
+  'Public Equities',
+  'Infrastructure',
+  'Green Energy',
+  'Other',
+];
+---
+
+<form
+  name="business-submission"
+  method="POST"
+  data-netlify="true"
+  netlify-honeypot="bot-field"
+  enctype="multipart/form-data"
+  action="/thank-you"
+  class="submission-form"
+>
+  <input type="hidden" name="form-name" value="business-submission" />
+  <p class="visually-hidden">
+    <label>
+      Don't fill this out if you're human: <input name="bot-field" />
+    </label>
+  </p>
+
+  <p class="form-intro">
+    Tell us a little about your business. Only your name, email, a short subject and description are required —
+    the rest is optional, but filling it in helps us respond faster.
+  </p>
+
+  <div class="form-row">
+    <label for={`${idPrefix}-name`}>Name *</label>
+    <input type="text" id={`${idPrefix}-name`} name="Name" required />
+  </div>
+
+  <div class="form-row">
+    <label for={`${idPrefix}-email`}>Email *</label>
+    <input type="email" id={`${idPrefix}-email`} name="Email" required />
+  </div>
+
+  <div class="form-row">
+    <label for={`${idPrefix}-subject`}>Subject *</label>
+    <input type="text" id={`${idPrefix}-subject`} name="Subject" required placeholder="e.g. Established landscaping business, Brisbane" />
+  </div>
+
+  <div class="form-row">
+    <label for={`${idPrefix}-description`}>Description *</label>
+    <textarea id={`${idPrefix}-description`} name="Description" rows="5" required placeholder="A brief overview of your business, how long you've run it, and why you're considering a sale."></textarea>
+  </div>
+
+  <div class="form-row">
+    <label for={`${idPrefix}-industry`}>Industry</label>
+    <select id={`${idPrefix}-industry`} name="Industry">
+      <option value="">Select an industry (optional)</option>
+      {industries.map((industry) => (
+        <option value={industry}>{industry}</option>
+      ))}
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for={`${idPrefix}-location`}>Location</label>
+    <input type="text" id={`${idPrefix}-location`} name="Location" placeholder="State, or country if outside Australia" />
+  </div>
+
+  <div class="grid grid-2">
+    <div class="form-row">
+      <label for={`${idPrefix}-profit`}>Annual Profit (AUD)</label>
+      <input type="number" id={`${idPrefix}-profit`} name="Annual Profit (AUD)" min="0" step="1000" />
+    </div>
+    <div class="form-row">
+      <label for={`${idPrefix}-years`}>Years Trading</label>
+      <input type="number" id={`${idPrefix}-years`} name="Years Trading" min="0" step="1" />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <label for={`${idPrefix}-file`}>Financials or Pitch Deck</label>
+    <input type="file" id={`${idPrefix}-file`} name="Attachment" accept=".pdf,.xlsx,.docx,.pptx" />
+    <p class="form-hint">PDF, XLSX, DOCX or PPTX. Optional, but helpful if you have something ready to share.</p>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit Your Business</button>
+</form>
+
+<style>
+  .submission-form {
+    max-width: 640px;
+  }
+
+  .form-intro {
+    color: var(--color-muted);
+    margin-bottom: 28px;
+  }
+
+  textarea {
+    width: 100%;
+    font-family: inherit;
+    font-size: 1rem;
+    padding: 12px 14px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: #fff;
+    color: var(--color-charcoal);
+    resize: vertical;
+  }
+
+  textarea:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+  }
+
+  input[type="file"] {
+    padding: 10px 0;
+    border: none;
+  }
+
+  .submission-form .btn {
+    margin-top: 8px;
+  }
+</style>

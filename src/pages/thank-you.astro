@@ -1,0 +1,35 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Thank You"
+  description="Thank you for submitting your business. We'll be in touch within one week."
+>
+  <section class="section thank-you">
+    <div class="container container--narrow">
+      <p class="eyebrow">Thank You</p>
+      <h1>Thanks, we've received your submission.</h1>
+      <p class="lead">We'll be in touch within one week.</p>
+      <a href="/" class="btn btn-secondary">Back to Home</a>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .container--narrow {
+    max-width: 640px;
+    text-align: center;
+  }
+
+  .thank-you {
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--color-muted);
+    margin-bottom: 32px;
+  }
+</style>

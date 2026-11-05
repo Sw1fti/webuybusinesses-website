@@ -1,0 +1,140 @@
+---
+const navItems = [
+  { href: '/how-it-works', label: 'How It Works' },
+  { href: '/resources', label: 'Resources' },
+  { href: '/valuation-calculator', label: 'Valuation Calculator' },
+];
+---
+
+<header class="site-header">
+  <div class="container site-header__inner">
+    <a href="/" class="wordmark">We Buy Businesses</a>
+    <nav class="site-nav" aria-label="Primary">
+      <ul>
+        {navItems.map((item) => (
+          <li><a href={item.href}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <a href="/submit" class="btn btn-primary header-cta">Submit Your Business</a>
+    <button class="menu-toggle" aria-expanded="false" aria-controls="mobile-nav" id="menu-toggle">
+      <span class="visually-hidden">Menu</span>
+      <svg width="26" height="26" viewBox="0 0 26 26" fill="none" aria-hidden="true">
+        <path d="M3 7h20M3 13h20M3 19h20" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+    </button>
+  </div>
+  <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile">
+    <ul>
+      {navItems.map((item) => (
+        <li><a href={item.href}>{item.label}</a></li>
+      ))}
+      <li><a href="/submit" class="btn btn-primary">Submit Your Business</a></li>
+    </ul>
+  </nav>
+</header>
+
+<style>
+  .site-header {
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-card);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+  }
+
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-top: 18px;
+    padding-bottom: 18px;
+  }
+
+  .wordmark {
+    font-family: var(--font-base);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-primary);
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+
+  .site-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 32px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .site-nav a {
+    color: var(--color-charcoal);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .site-nav a:hover {
+    color: var(--color-primary);
+  }
+
+  .header-cta {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+  }
+
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--color-charcoal);
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  .mobile-nav {
+    display: none;
+  }
+
+  @media (max-width: 860px) {
+    .site-nav {
+      display: none;
+    }
+    .header-cta {
+      display: none;
+    }
+    .menu-toggle {
+      display: block;
+    }
+    .mobile-nav.is-open {
+      display: block;
+      border-top: 1px solid var(--color-border);
+      padding: 16px 24px 24px;
+    }
+    .mobile-nav ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .mobile-nav a {
+      color: var(--color-charcoal);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const nav = document.getElementById('mobile-nav');
+  toggle?.addEventListener('click', () => {
+    const isOpen = nav?.classList.toggle('is-open');
+    toggle.setAttribute('aria-expanded', String(Boolean(isOpen)));
+  });
+</script>

@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SubmissionForm from '../components/SubmissionForm.astro';
+---
+
+<BaseLayout
+  title="Submit Your Business"
+  description="Submit your Australian business for sale directly to us. No broker fees, and a response within one week."
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <p class="eyebrow">Get Started</p>
+      <h1>Submit Your Business</h1>
+      <p class="lead">
+        Tell us a little about your business below. There's no obligation, and your information is treated
+        confidentially. We'll respond within one week.
+      </p>
+      <SubmissionForm idPrefix="submit" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .container--narrow {
+    max-width: 760px;
+  }
+
+  .lead {
+    font-size: 1.15rem;
+    color: var(--color-muted);
+    margin-bottom: 40px;
+  }
+</style>

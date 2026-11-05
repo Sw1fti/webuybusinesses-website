@@ -1,0 +1,209 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DisclaimerNote from '../components/DisclaimerNote.astro';
+---
+
+<BaseLayout
+  title="Valuation Calculator"
+  description="Get a general estimate of your business's value using an EBITDA multiple, with a low-high range and an indicative five-year projection."
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <p class="eyebrow">Valuation Calculator</p>
+      <h1>Estimate your business's value</h1>
+      <p class="lead">
+        Enter your annual EBITDA and choose a multiple to see a general estimate of enterprise value. This is a
+        general estimate only — not a formal valuation.
+      </p>
+
+      <div class="calculator card">
+        <div class="form-row">
+          <label for="ebitda">Annual EBITDA (AUD) *</label>
+          <input type="number" id="ebitda" min="0" step="1000" placeholder="e.g. 300000" />
+        </div>
+
+        <div class="form-row">
+          <label for="multiple">EBITDA Multiple: <span id="multiple-value">4.00x</span></label>
+          <input type="range" id="multiple" min="1" max="10" step="0.25" value="4" />
+          <div class="range-labels">
+            <span>1x</span>
+            <span>10x</span>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label for="revenue">Annual Revenue (AUD) — optional</label>
+          <input type="number" id="revenue" min="0" step="1000" placeholder="e.g. 1200000" />
+        </div>
+
+        <div class="form-row">
+          <label for="growth">Expected Annual Growth Rate (%) — optional</label>
+          <input type="number" id="growth" min="0" max="100" step="0.5" placeholder="e.g. 8" />
+        </div>
+
+        <div class="results" id="results" hidden>
+          <div class="result-row">
+            <span class="result-label">Estimated Enterprise Value</span>
+            <span class="result-value" id="result-value">—</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Estimated Range (multiple &plusmn;1x)</span>
+            <span class="result-value" id="result-range">—</span>
+          </div>
+          <div class="result-row" id="margin-row" hidden>
+            <span class="result-label">EBITDA Margin</span>
+            <span class="result-value" id="result-margin">—</span>
+          </div>
+          <div class="result-row" id="growth-row" hidden>
+            <span class="result-label">Indicative Value in 5 Years</span>
+            <span class="result-value" id="result-growth">—</span>
+          </div>
+        </div>
+
+        <p class="estimate-note">
+          This is a general estimate only, based on the figures you've entered. It does not constitute a formal
+          valuation, and actual outcomes depend on many factors specific to your business and the market at the
+          time of sale.
+        </p>
+      </div>
+
+      <div class="cta card">
+        <h3>Want a more specific view of your options?</h3>
+        <p>We're happy to talk through your business directly, with no obligation.</p>
+        <a href="/submit" class="btn btn-primary">Submit Your Business</a>
+      </div>
+
+      <DisclaimerNote />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .container--narrow {
+    max-width: 700px;
+  }
+
+  .lead {
+    font-size: 1.15rem;
+    color: var(--color-muted);
+    margin-bottom: 32px;
+  }
+
+  .calculator {
+    margin-bottom: 40px;
+  }
+
+  input[type="range"] {
+    width: 100%;
+    accent-color: var(--color-primary);
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    color: var(--color-muted);
+    font-size: 0.85rem;
+    margin-top: 4px;
+  }
+
+  .results {
+    margin-top: 32px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 24px;
+  }
+
+  .result-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 10px 0;
+  }
+
+  .result-label {
+    color: var(--color-muted);
+    font-weight: 600;
+  }
+
+  .result-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--color-primary);
+  }
+
+  .estimate-note {
+    margin-top: 28px;
+    color: var(--color-muted);
+    font-size: 0.92rem;
+  }
+
+  .cta {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+</style>
+
+<script>
+  const ebitdaInput = document.getElementById('ebitda') as HTMLInputElement;
+  const multipleInput = document.getElementById('multiple') as HTMLInputElement;
+  const multipleValue = document.getElementById('multiple-value') as HTMLSpanElement;
+  const revenueInput = document.getElementById('revenue') as HTMLInputElement;
+  const growthInput = document.getElementById('growth') as HTMLInputElement;
+
+  const results = document.getElementById('results') as HTMLDivElement;
+  const resultValue = document.getElementById('result-value') as HTMLSpanElement;
+  const resultRange = document.getElementById('result-range') as HTMLSpanElement;
+  const marginRow = document.getElementById('margin-row') as HTMLDivElement;
+  const resultMargin = document.getElementById('result-margin') as HTMLSpanElement;
+  const growthRow = document.getElementById('growth-row') as HTMLDivElement;
+  const resultGrowth = document.getElementById('result-growth') as HTMLSpanElement;
+
+  const formatCurrency = (value: number) =>
+    new Intl.NumberFormat('en-AU', {
+      style: 'currency',
+      currency: 'AUD',
+      maximumFractionDigits: 0,
+    }).format(value);
+
+  function recalculate() {
+    const ebitda = parseFloat(ebitdaInput.value);
+    const multiple = parseFloat(multipleInput.value);
+    multipleValue.textContent = `${multiple.toFixed(2)}x`;
+
+    if (!ebitda || ebitda <= 0) {
+      results.hidden = true;
+      return;
+    }
+
+    const value = ebitda * multiple;
+    const lowMultiple = Math.max(0.25, multiple - 1);
+    const highMultiple = multiple + 1;
+
+    resultValue.textContent = formatCurrency(value);
+    resultRange.textContent = `${formatCurrency(ebitda * lowMultiple)} – ${formatCurrency(ebitda * highMultiple)}`;
+
+    const revenue = parseFloat(revenueInput.value);
+    if (revenue && revenue > 0) {
+      marginRow.hidden = false;
+      resultMargin.textContent = `${((ebitda / revenue) * 100).toFixed(1)}%`;
+    } else {
+      marginRow.hidden = true;
+    }
+
+    const growth = parseFloat(growthInput.value);
+    if (growth && growth > 0) {
+      growthRow.hidden = false;
+      const futureEbitda = ebitda * Math.pow(1 + growth / 100, 5);
+      resultGrowth.textContent = formatCurrency(futureEbitda * multiple);
+    } else {
+      growthRow.hidden = true;
+    }
+
+    results.hidden = false;
+  }
+
+  [ebitdaInput, multipleInput, revenueInput, growthInput].forEach((input) => {
+    input.addEventListener('input', recalculate);
+  });
+
+  recalculate();
+</script>

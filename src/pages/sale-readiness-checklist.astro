@@ -1,0 +1,224 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const groups = [
+  {
+    name: 'Financials',
+    items: [
+      'Profit and loss statements for the last three years are up to date',
+      'Balance sheet is current and reconciled',
+      'Tax returns for the last three years are on hand',
+      'Add-backs and one-off costs are documented and explainable',
+      'Debtors and creditors are in reasonable order',
+    ],
+  },
+  {
+    name: 'Operations',
+    items: [
+      'Key processes are documented, not just known by you',
+      'The business can run for a week or two without you being present',
+      'Supplier agreements and key contracts are in writing',
+      'Equipment and assets are in good working order and listed',
+      'Lease terms (if applicable) are understood and current',
+    ],
+  },
+  {
+    name: 'Legal',
+    items: [
+      'Business structure (company, trust, partnership, sole trader) is clear',
+      'Any outstanding disputes or legal issues are resolved or disclosed',
+      'Intellectual property, trademarks or licences are documented',
+      'Insurance policies are current and appropriate',
+      'A lawyer experienced in business sales has been identified',
+    ],
+  },
+  {
+    name: 'People and Customers',
+    items: [
+      'Key staff roles and responsibilities are documented',
+      'Staff entitlements and employment agreements are up to date',
+      'Customer base is reasonably diversified, not reliant on one or two clients',
+      'Customer and client records are organised and accessible',
+      "You've thought through how you'll communicate a sale to staff and customers",
+    ],
+  },
+];
+
+const totalItems = groups.reduce((sum, group) => sum + group.items.length, 0);
+---
+
+<BaseLayout
+  title="Sale Readiness Checklist"
+  description="An interactive checklist covering financials, operations, legal and people, to help you gauge how ready your business is for sale."
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <p class="eyebrow">Sale Readiness Checklist</p>
+      <h1>How ready is your business for sale?</h1>
+      <p class="lead">
+        Work through the items below at your own pace. Your progress is saved on this device so you can come back to
+        it.
+      </p>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        <p class="progress-text" id="progress-text">0 of {totalItems} complete</p>
+      </div>
+
+      {groups.map((group) => (
+        <div class="checklist-group">
+          <h2>{group.name}</h2>
+          <ul class="checklist">
+            {group.items.map((item, index) => {
+              const id = `${group.name.toLowerCase().replace(/[^a-z]+/g, '-')}-${index}`;
+              return (
+                <li>
+                  <label class="checklist-item">
+                    <input type="checkbox" class="checklist-checkbox" data-id={id} />
+                    <span>{item}</span>
+                  </label>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
+
+      <div class="cta card">
+        <h3>Ready to take the next step?</h3>
+        <p>
+          You don't need to tick every box before reaching out — we're happy to talk at any stage of readiness.
+        </p>
+        <a href="/submit" class="btn btn-primary">Submit Your Business</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .container--narrow {
+    max-width: 720px;
+  }
+
+  .lead {
+    font-size: 1.15rem;
+    color: var(--color-muted);
+    margin-bottom: 32px;
+  }
+
+  .progress-wrap {
+    margin-bottom: 40px;
+  }
+
+  .progress-bar {
+    height: 14px;
+    border-radius: 999px;
+    background: var(--color-border);
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--color-primary);
+    transition: width 0.2s ease;
+  }
+
+  .progress-text {
+    margin: 10px 0 0;
+    font-weight: 600;
+    color: var(--color-muted);
+  }
+
+  .checklist-group {
+    margin-bottom: 36px;
+  }
+
+  .checklist {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .checklist-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    background: var(--color-card);
+    margin-bottom: 10px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .checklist-checkbox {
+    width: 20px;
+    height: 20px;
+    margin-top: 2px;
+    accent-color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .checklist-item:has(.checklist-checkbox:checked) span {
+    color: var(--color-muted);
+    text-decoration: line-through;
+  }
+
+  .cta {
+    margin-top: 48px;
+    text-align: center;
+  }
+</style>
+
+<script>
+  const STORAGE_KEY = 'wbb-sale-readiness-checklist';
+  const checkboxes = document.querySelectorAll<HTMLInputElement>('.checklist-checkbox');
+  const progressFill = document.getElementById('progress-fill') as HTMLDivElement;
+  const progressText = document.getElementById('progress-text') as HTMLParagraphElement;
+
+  function loadState(): Record<string, boolean> {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : {};
+    } catch {
+      return {};
+    }
+  }
+
+  function saveState(state: Record<string, boolean>) {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    } catch {
+      // ignore storage errors (private browsing, etc.)
+    }
+  }
+
+  function updateProgress() {
+    const total = checkboxes.length;
+    const checked = Array.from(checkboxes).filter((c) => c.checked).length;
+    const percent = total === 0 ? 0 : Math.round((checked / total) * 100);
+    progressFill.style.width = `${percent}%`;
+    progressText.textContent = `${checked} of ${total} complete`;
+  }
+
+  const state = loadState();
+  checkboxes.forEach((checkbox) => {
+    const id = checkbox.dataset.id;
+    if (id && state[id]) {
+      checkbox.checked = true;
+    }
+    checkbox.addEventListener('change', () => {
+      if (id) {
+        state[id] = checkbox.checked;
+        saveState(state);
+      }
+      updateProgress();
+    });
+  });
+
+  updateProgress();
+</script>

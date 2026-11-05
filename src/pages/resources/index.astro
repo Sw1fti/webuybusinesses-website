@@ -1,0 +1,130 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const allArticles = (await getCollection('articles')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const categories = [
+  'Selling a Business',
+  'Valuation',
+  'Tax',
+  'Succession',
+  'Exit Options',
+  'Legal',
+];
+---
+
+<BaseLayout
+  title="Resources"
+  description="Practical articles on selling a business, valuation, tax, succession, exit options and legal considerations for Australian business owners."
+>
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Resources</p>
+      <h1>Articles for business owners</h1>
+      <p class="lead">
+        Practical, general-information articles to help you think through a sale, whenever you're ready to consider
+        one.
+      </p>
+
+      <div class="filters" role="group" aria-label="Filter by category">
+        <button type="button" class="filter-btn is-active" data-filter="all">All</button>
+        {categories.map((category) => (
+          <button type="button" class="filter-btn" data-filter={category}>{category}</button>
+        ))}
+      </div>
+
+      <div class="grid grid-3 article-grid">
+        {allArticles.map((article) => (
+          <a class="card article-card" href={`/resources/${article.id}`} data-category={article.data.category}>
+            <p class="eyebrow">{article.data.category}</p>
+            <h3>{article.data.title}</h3>
+            <p>{article.data.description}</p>
+          </a>
+        ))}
+      </div>
+
+      <p class="empty-state" id="empty-state" hidden>No articles in this category yet.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .lead {
+    font-size: 1.15rem;
+    color: var(--color-muted);
+    max-width: 640px;
+  }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 32px 0 40px;
+  }
+
+  .filter-btn {
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border);
+    background: var(--color-card);
+    color: var(--color-charcoal);
+    cursor: pointer;
+  }
+
+  .filter-btn.is-active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
+  }
+
+  .article-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .article-card h3 {
+    color: var(--color-charcoal);
+  }
+
+  .article-card:hover h3 {
+    color: var(--color-primary);
+  }
+
+  .empty-state {
+    color: var(--color-muted);
+    margin-top: 32px;
+  }
+</style>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+  const cards = document.querySelectorAll<HTMLAnchorElement>('.article-card');
+  const emptyState = document.getElementById('empty-state');
+
+  buttons.forEach((button) => {
+    button.addEventListener('click', () => {
+      buttons.forEach((b) => b.classList.remove('is-active'));
+      button.classList.add('is-active');
+
+      const filter = button.dataset.filter;
+      let visibleCount = 0;
+
+      cards.forEach((card) => {
+        const matches = filter === 'all' || card.dataset.category === filter;
+        card.style.display = matches ? '' : 'none';
+        if (matches) visibleCount += 1;
+      });
+
+      if (emptyState) {
+        emptyState.hidden = visibleCount !== 0;
+      }
+    });
+  });
+</script>

@@ -1,0 +1,236 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SubmissionForm from '../components/SubmissionForm.astro';
+
+const allArticles = await getCollection('articles');
+const latestArticles = allArticles
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const sectors = [
+  'Fitness',
+  'Health Tech',
+  'Real Estate Agencies and Rent Rolls',
+  'Property – Commercial and Residential',
+  'Financial Services',
+  'Technology',
+  'Venture Capital',
+  'Funds',
+  'Public Equities',
+  'Infrastructure',
+  'Green Energy',
+];
+
+const valuePoints = [
+  {
+    title: 'No broker fees',
+    body: 'Deal directly with the buyer. There is no commission coming out of your sale price.',
+  },
+  {
+    title: 'Fast movers',
+    body: "We tell you within one week whether we're interested, so you're not left waiting.",
+  },
+  {
+    title: 'Operators',
+    body: "We've acquired, run and built businesses ourselves, so we understand what we're taking on.",
+  },
+];
+
+const steps = [
+  {
+    title: 'Submit',
+    body: 'Tell us about your business using our short online form. It takes a few minutes.',
+  },
+  {
+    title: 'We review',
+    body: "We look closely at your business and what you've told us, with no pressure or obligation on your part.",
+  },
+  {
+    title: 'We respond within one week',
+    body: "You'll hear back from us within a week on whether we'd like to take the conversation further.",
+  },
+];
+---
+
+<BaseLayout
+  title="Home"
+  description="We buy Australian businesses directly from owners — simply, quickly, and the right way. No broker fees, a response within one week."
+>
+  <section class="hero section">
+    <div class="container">
+      <h1>We buy businesses. Simply, quickly, and the right way.</h1>
+      <p class="hero-sub">
+        We're backed by private capital and business operators who look to continue operating the businesses we
+        buy. If you're an Australian business owner considering a sale, we'd welcome a direct, no-pressure
+        conversation.
+      </p>
+      <a href="/submit" class="btn btn-primary">Submit Your Business</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-3">
+        {valuePoints.map((point) => (
+          <div class="card">
+            <h3>{point.title}</h3>
+            <p>{point.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <p class="eyebrow">How It Works</p>
+      <h2>Three simple steps</h2>
+      <div class="grid grid-3">
+        {steps.map((step, index) => (
+          <div class="step">
+            <div class="step-number">{index + 1}</div>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+          </div>
+        ))}
+      </div>
+      <a href="/how-it-works" class="link-more">Learn more about our process &rarr;</a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <p class="eyebrow">Our Focus</p>
+      <h2>Sectors We've Acquired and Built In</h2>
+      <p class="sectors-intro">
+        We focus on Australian asset-based businesses. For technology businesses, we're open to opportunities
+        globally.
+      </p>
+      <ul class="sectors-list">
+        {sectors.map((sector) => (
+          <li>{sector}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {latestArticles.length > 0 && (
+    <section class="section section--alt">
+      <div class="container">
+        <p class="eyebrow">Resources</p>
+        <h2>From our resources</h2>
+        <div class="grid grid-3">
+          {latestArticles.map((article) => (
+            <a class="card article-preview" href={`/resources/${article.id}`}>
+              <p class="eyebrow">{article.data.category}</p>
+              <h3>{article.data.title}</h3>
+              <p>{article.data.description}</p>
+            </a>
+          ))}
+        </div>
+        <a href="/resources" class="link-more">Browse all resources &rarr;</a>
+      </div>
+    </section>
+  )}
+
+  <section class="section" id="submit">
+    <div class="container">
+      <p class="eyebrow">Get Started</p>
+      <h2>Submit Your Business</h2>
+      <SubmissionForm idPrefix="home" />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-top: 80px;
+    padding-bottom: 48px;
+  }
+
+  .hero h1 {
+    max-width: 780px;
+  }
+
+  .hero-sub {
+    max-width: 620px;
+    font-size: 1.2rem;
+    color: var(--color-muted);
+  }
+
+  .step {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 32px;
+  }
+
+  .step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    color: #fff;
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+
+  .sectors-intro {
+    color: var(--color-muted);
+    max-width: 640px;
+  }
+
+  .sectors-list {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    padding: 0;
+    margin: 32px 0 0;
+  }
+
+  .sectors-list li {
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .sectors-list {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .sectors-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .article-preview {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .article-preview h3 {
+    color: var(--color-charcoal);
+  }
+
+  .article-preview:hover h3 {
+    color: var(--color-primary);
+  }
+
+  .link-more {
+    display: inline-block;
+    margin-top: 32px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+</style>
