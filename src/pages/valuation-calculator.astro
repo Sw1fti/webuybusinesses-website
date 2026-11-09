@@ -5,18 +5,27 @@ import DisclaimerNote from '../components/DisclaimerNote.astro';
 
 <BaseLayout
   title="Valuation Calculator"
-  description="Get a general estimate of your business's value using an EBITDA multiple, with a low-high range and an indicative five-year projection."
+  description="Get a general estimate of your business's value using an EBITDA multiple, and see what a broker's commission could cost you by comparison."
 >
   <section class="section">
     <div class="container container--narrow">
-      <p class="eyebrow">Valuation Calculator</p>
+      <p class="eyebrow-rule">Valuation Calculator</p>
       <h1>Estimate your business's value</h1>
       <p class="lead">
-        Enter your annual EBITDA and choose a multiple to see a general estimate of enterprise value. This is a
-        general estimate only — not a formal valuation.
+        Two quick tools: a general estimate of enterprise value, and a look at what a broker's commission could
+        cost you by comparison. Both are general estimates only — not a formal valuation.
       </p>
 
-      <div class="calculator card">
+      <div class="tabs" role="tablist" aria-label="Valuation Calculator tabs">
+        <button class="tab-btn is-active" data-tab="value" role="tab" aria-selected="true" id="tab-value">
+          Estimate Your Value
+        </button>
+        <button class="tab-btn" data-tab="fees" role="tab" aria-selected="false" id="tab-fees">
+          Broker Fee Savings
+        </button>
+      </div>
+
+      <div class="tab-panel" data-panel="value" role="tabpanel" aria-labelledby="tab-value">
         <div class="form-row">
           <label for="ebitda">Annual EBITDA (AUD) *</label>
           <input type="number" id="ebitda" min="0" step="1000" placeholder="e.g. 300000" />
@@ -48,24 +57,58 @@ import DisclaimerNote from '../components/DisclaimerNote.astro';
           </div>
           <div class="result-row">
             <span class="result-label">Estimated Range (multiple &plusmn;1x)</span>
-            <span class="result-value" id="result-range">—</span>
+            <span class="result-value result-value--small" id="result-range">—</span>
           </div>
           <div class="result-row" id="margin-row" hidden>
             <span class="result-label">EBITDA Margin</span>
-            <span class="result-value" id="result-margin">—</span>
+            <span class="result-value result-value--small" id="result-margin">—</span>
           </div>
           <div class="result-row" id="growth-row" hidden>
             <span class="result-label">Indicative Value in 5 Years</span>
-            <span class="result-value" id="result-growth">—</span>
+            <span class="result-value result-value--small" id="result-growth">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-panel" data-panel="fees" role="tabpanel" aria-labelledby="tab-fees" hidden>
+        <div class="form-row">
+          <label for="sale-price">Expected Sale Price (AUD) *</label>
+          <input type="number" id="sale-price" min="0" step="1000" placeholder="e.g. 2000000" />
+        </div>
+
+        <div class="form-row">
+          <label for="commission">Commission Rate: <span id="commission-value">6.0%</span></label>
+          <input type="range" id="commission" min="1" max="10" step="0.5" value="6" />
+          <div class="range-labels">
+            <span>1%</span>
+            <span>10% — set this to your broker's quote</span>
           </div>
         </div>
 
-        <p class="estimate-note">
-          This is a general estimate only, based on the figures you've entered. It does not constitute a formal
-          valuation, and actual outcomes depend on many factors specific to your business and the market at the
-          time of sale.
-        </p>
+        <div class="form-row">
+          <label for="marketing-fee">Upfront Marketing Fee (AUD) — optional</label>
+          <input type="number" id="marketing-fee" min="0" step="500" placeholder="e.g. 5000" />
+        </div>
+
+        <div class="results" id="fee-results" hidden>
+          <div class="result-row">
+            <span class="result-label">A Broker Would Cost You Approximately</span>
+            <span class="result-value" id="fee-result-value">—</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Selling Direct to Us</span>
+            <span class="result-value result-value--brand">$0 in fees from us</span>
+          </div>
+        </div>
+
+        <a href="/submit" class="btn btn-primary fee-cta">Submit Your Business</a>
       </div>
+
+      <p class="estimate-note">
+        These are general estimates only, based on the figures you've entered. They do not constitute a formal
+        valuation or advice, and actual outcomes depend on many factors specific to your business and the market
+        at the time of sale.
+      </p>
 
       <div class="cta card">
         <h3>Want a more specific view of your options?</h3>
@@ -89,13 +132,39 @@ import DisclaimerNote from '../components/DisclaimerNote.astro';
     margin-bottom: 32px;
   }
 
-  .calculator {
-    margin-bottom: 40px;
+  .tabs {
+    display: flex;
+    gap: 8px;
+    border-bottom: 1px solid var(--color-border);
+    margin-bottom: 36px;
+  }
+
+  .tab-btn {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--color-muted);
+    padding: 12px 4px;
+    margin-right: 28px;
+    cursor: pointer;
+  }
+
+  .tab-btn.is-active {
+    color: var(--color-charcoal);
+    border-bottom-color: var(--color-primary);
+  }
+
+  .tab-panel[hidden] {
+    display: none;
   }
 
   input[type="range"] {
     width: 100%;
     accent-color: var(--color-primary);
+    margin-top: 10px;
   }
 
   .range-labels {
@@ -107,16 +176,22 @@ import DisclaimerNote from '../components/DisclaimerNote.astro';
   }
 
   .results {
-    margin-top: 32px;
+    margin-top: 36px;
     border-top: 1px solid var(--color-border);
-    padding-top: 24px;
+    padding-top: 28px;
   }
 
   .result-row {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    padding: 10px 0;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .result-row:first-child {
+    border-top: none;
   }
 
   .result-label {
@@ -125,20 +200,34 @@ import DisclaimerNote from '../components/DisclaimerNote.astro';
   }
 
   .result-value {
-    font-size: 1.3rem;
-    font-weight: 700;
+    font-family: var(--font-display);
+    font-size: 1.9rem;
+    font-weight: 400;
     color: var(--color-primary);
+    text-align: right;
+  }
+
+  .result-value--small {
+    font-size: 1.2rem;
+  }
+
+  .result-value--brand {
+    color: var(--color-brass);
+  }
+
+  .fee-cta {
+    margin-top: 32px;
   }
 
   .estimate-note {
-    margin-top: 28px;
+    margin-top: 40px;
     color: var(--color-muted);
     font-size: 0.92rem;
   }
 
   .cta {
     text-align: center;
-    margin-bottom: 40px;
+    margin: 32px 0 40px;
   }
 </style>
 
@@ -206,4 +295,52 @@ import DisclaimerNote from '../components/DisclaimerNote.astro';
   });
 
   recalculate();
+
+  const salePriceInput = document.getElementById('sale-price') as HTMLInputElement;
+  const commissionInput = document.getElementById('commission') as HTMLInputElement;
+  const commissionValue = document.getElementById('commission-value') as HTMLSpanElement;
+  const marketingFeeInput = document.getElementById('marketing-fee') as HTMLInputElement;
+  const feeResults = document.getElementById('fee-results') as HTMLDivElement;
+  const feeResultValue = document.getElementById('fee-result-value') as HTMLSpanElement;
+
+  function recalculateFees() {
+    const salePrice = parseFloat(salePriceInput.value);
+    const commission = parseFloat(commissionInput.value);
+    commissionValue.textContent = `${commission.toFixed(1)}%`;
+
+    if (!salePrice || salePrice <= 0) {
+      feeResults.hidden = true;
+      return;
+    }
+
+    const marketingFee = parseFloat(marketingFeeInput.value) || 0;
+    const brokerCost = salePrice * (commission / 100) + marketingFee;
+    feeResultValue.textContent = formatCurrency(brokerCost);
+    feeResults.hidden = false;
+  }
+
+  [salePriceInput, commissionInput, marketingFeeInput].forEach((input) => {
+    input.addEventListener('input', recalculateFees);
+  });
+
+  recalculateFees();
+
+  const tabButtons = document.querySelectorAll<HTMLButtonElement>('.tab-btn');
+  const tabPanels = document.querySelectorAll<HTMLDivElement>('.tab-panel');
+
+  tabButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      tabButtons.forEach((b) => {
+        b.classList.remove('is-active');
+        b.setAttribute('aria-selected', 'false');
+      });
+      button.classList.add('is-active');
+      button.setAttribute('aria-selected', 'true');
+
+      const target = button.dataset.tab;
+      tabPanels.forEach((panel) => {
+        panel.hidden = panel.dataset.panel !== target;
+      });
+    });
+  });
 </script>

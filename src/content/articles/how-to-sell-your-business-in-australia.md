@@ -3,6 +3,7 @@ title: "How to Sell Your Business in Australia: A Step-by-Step Guide"
 description: "A practical, step-by-step overview of what's involved in selling a business in Australia, from getting your numbers in order to settlement."
 category: "Selling a Business"
 date: 2026-02-10
+startHere: true
 ---
 
 Selling a business is one of the biggest decisions many Australian owners will ever make. For most people, it only happens once. Unlike selling a house, there's no standard process everyone follows, and the right approach depends heavily on your industry, your size, and why you're selling in the first place.

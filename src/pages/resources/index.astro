@@ -1,10 +1,14 @@
 ---
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getReadingTime } from '../../utils/reading-time';
 
 const allArticles = (await getCollection('articles')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
+
+const featured = allArticles.find((a) => a.data.startHere);
+const otherArticles = allArticles.filter((a) => a.id !== featured?.id);
 
 const categories = [
   'Selling a Business',
@@ -22,12 +26,21 @@ const categories = [
 >
   <section class="section">
     <div class="container">
-      <p class="eyebrow">Resources</p>
+      <p class="eyebrow-rule">Resources</p>
       <h1>Articles for business owners</h1>
       <p class="lead">
         Practical, general-information articles to help you think through a sale, whenever you're ready to consider
         one.
       </p>
+
+      {featured && (
+        <a class="featured-card" href={`/resources/${featured.id}`}>
+          <span class="not-ready-label">Start Here</span>
+          <h2>{featured.data.title}</h2>
+          <p>{featured.data.description}</p>
+          <span class="featured-meta">{getReadingTime(featured.body ?? '')} min read</span>
+        </a>
+      )}
 
       <div class="filters" role="group" aria-label="Filter by category">
         <button type="button" class="filter-btn is-active" data-filter="all">All</button>
@@ -36,15 +49,18 @@ const categories = [
         ))}
       </div>
 
-      <div class="grid grid-3 article-grid">
-        {allArticles.map((article) => (
-          <a class="card article-card" href={`/resources/${article.id}`} data-category={article.data.category}>
-            <p class="eyebrow">{article.data.category}</p>
-            <h3>{article.data.title}</h3>
-            <p>{article.data.description}</p>
-          </a>
+      <ul class="article-list">
+        {otherArticles.map((article) => (
+          <li class="article-item" data-category={article.data.category}>
+            <a href={`/resources/${article.id}`}>
+              <span class="article-category">{article.data.category}</span>
+              <h3>{article.data.title}</h3>
+              <p>{article.data.description}</p>
+              <span class="article-meta">{getReadingTime(article.body ?? '')} min read</span>
+            </a>
+          </li>
         ))}
-      </div>
+      </ul>
 
       <p class="empty-state" id="empty-state" hidden>No articles in this category yet.</p>
     </div>
@@ -58,21 +74,57 @@ const categories = [
     max-width: 640px;
   }
 
+  .featured-card {
+    display: block;
+    margin: 40px 0;
+    padding: 36px 0;
+    border-top: 1px solid var(--color-brass-dim);
+    border-bottom: 1px solid var(--color-brass-dim);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .not-ready-label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-brass);
+  }
+
+  .featured-card h2 {
+    margin: 12px 0 10px;
+  }
+
+  .featured-card p {
+    max-width: 640px;
+    margin-bottom: 10px;
+  }
+
+  .featured-card:hover h2 {
+    color: var(--color-primary);
+  }
+
+  .featured-meta {
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+
   .filters {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    margin: 32px 0 40px;
+    margin: 32px 0 8px;
   }
 
   .filter-btn {
     font-family: inherit;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    padding: 8px 18px;
+    padding: 8px 16px;
     border-radius: 999px;
     border: 1px solid var(--color-border);
-    background: var(--color-card);
+    background: transparent;
     color: var(--color-charcoal);
     cursor: pointer;
   }
@@ -83,18 +135,51 @@ const categories = [
     color: #fff;
   }
 
-  .article-card {
+  .article-list {
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+  }
+
+  .article-item {
+    border-top: 1px solid var(--color-border);
+    padding: 28px 0;
+  }
+
+  .article-item:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .article-item a {
     display: block;
     text-decoration: none;
     color: inherit;
   }
 
-  .article-card h3 {
-    color: var(--color-charcoal);
+  .article-category {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-brass);
   }
 
-  .article-card:hover h3 {
+  .article-item h3 {
+    margin: 10px 0 8px;
+  }
+
+  .article-item:hover h3 {
     color: var(--color-primary);
+  }
+
+  .article-item p {
+    color: var(--color-muted);
+    margin-bottom: 8px;
+  }
+
+  .article-meta {
+    color: var(--color-muted);
+    font-size: 0.88rem;
   }
 
   .empty-state {
@@ -105,7 +190,7 @@ const categories = [
 
 <script>
   const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-  const cards = document.querySelectorAll<HTMLAnchorElement>('.article-card');
+  const cards = document.querySelectorAll<HTMLLIElement>('.article-item');
   const emptyState = document.getElementById('empty-state');
 
   buttons.forEach((button) => {

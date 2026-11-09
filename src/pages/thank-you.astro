@@ -1,5 +1,9 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const allArticles = await getCollection('articles');
+const startHere = allArticles.find((a) => a.data.startHere);
 ---
 
 <BaseLayout
@@ -8,9 +12,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 >
   <section class="section thank-you">
     <div class="container container--narrow">
-      <p class="eyebrow">Thank You</p>
+      <p class="eyebrow-rule center">Thank You</p>
       <h1>Thanks, we've received your submission.</h1>
       <p class="lead">We'll be in touch within one week.</p>
+
+      <div class="while-you-wait">
+        <p class="while-label">While You Wait</p>
+        <div class="while-links">
+          {startHere && (
+            <a href={`/resources/${startHere.id}`}>Start Here: {startHere.data.title}</a>
+          )}
+          <a href="/sale-readiness-checklist">Sale Readiness Checklist</a>
+        </div>
+      </div>
+
       <a href="/" class="btn btn-secondary">Back to Home</a>
     </div>
   </section>
@@ -27,9 +42,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     padding-bottom: 100px;
   }
 
+  .eyebrow-rule.center {
+    justify-content: center;
+  }
+
   .lead {
     font-size: 1.2rem;
     color: var(--color-muted);
-    margin-bottom: 32px;
+    margin-bottom: 40px;
+  }
+
+  .while-you-wait {
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    padding: 28px 0;
+    margin-bottom: 40px;
+  }
+
+  .while-label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-brass);
+    margin-bottom: 16px;
+  }
+
+  .while-links {
+    display: grid;
+    gap: 12px;
+  }
+
+  .while-links a {
+    font-weight: 600;
+    text-decoration: none;
   }
 </style>

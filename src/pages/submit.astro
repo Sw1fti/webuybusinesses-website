@@ -1,6 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SubmissionForm from '../components/SubmissionForm.astro';
+
+const whatHappensNext = [
+  'We read every submission personally — not an algorithm or a junior screener.',
+  "You'll hear from us within one week, whether we're interested or not.",
+  "There's no cost or obligation at this stage, or at any stage.",
+  'It takes about two minutes. Optional fields just help us respond faster.',
+];
 ---
 
 <BaseLayout
@@ -8,26 +15,70 @@ import SubmissionForm from '../components/SubmissionForm.astro';
   description="Submit your Australian business for sale directly to us. No broker fees, and a response within one week."
 >
   <section class="section">
-    <div class="container container--narrow">
-      <p class="eyebrow">Get Started</p>
-      <h1>Submit Your Business</h1>
-      <p class="lead">
-        Tell us a little about your business below. There's no obligation, and your information is treated
-        confidentially. We'll respond within one week.
-      </p>
-      <SubmissionForm idPrefix="submit" />
+    <div class="container submit-layout">
+      <div class="submit-form-col">
+        <p class="eyebrow-rule">Get Started</p>
+        <h1>Submit Your Business</h1>
+        <p class="lead">Tell us a little about your business below. There's no obligation.</p>
+        <SubmissionForm idPrefix="submit" />
+      </div>
+      <aside class="next-panel">
+        <p class="eyebrow-rule">What Happens Next</p>
+        <ul>
+          {whatHappensNext.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </aside>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .container--narrow {
-    max-width: 760px;
+  .submit-layout {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 64px;
+    align-items: start;
   }
 
   .lead {
     font-size: 1.15rem;
     color: var(--color-muted);
     margin-bottom: 40px;
+  }
+
+  .next-panel {
+    border-top: 1px solid var(--color-border);
+    padding-top: 32px;
+  }
+
+  .next-panel ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 20px;
+  }
+
+  .next-panel li {
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .next-panel li:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  @media (max-width: 900px) {
+    .submit-layout {
+      grid-template-columns: 1fr;
+      gap: 40px;
+    }
+
+    .next-panel {
+      order: -1;
+    }
   }
 </style>

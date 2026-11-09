@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const steps = [
   {
     title: 'You submit your business',
-    body: "It starts with a short online form. We ask for the basics — your name, contact details, and a brief description of your business — along with some optional information that helps us respond faster, such as your industry, location, annual profit and how long you've been trading. If you have financials or a pitch deck ready, you can attach them, but it's entirely optional at this stage.",
+    body: "It starts with a short online form. We ask for the basics — your name, contact details, and a brief description of your business — along with some optional information that helps us respond faster, such as your industry, location, annual profit and how long you've been trading. If you have financials or a pitch deck ready, you can attach them, but it's entirely optional at this stage. This step costs you nothing and takes about two minutes.",
   },
   {
     title: 'We review your submission',
@@ -15,27 +15,70 @@ const steps = [
     body: "You'll hear back from us within one week of submitting, regardless of our decision. If we're interested, we'll reach out to talk through next steps, including a general indication of value, timeline and how a transaction might be structured. If it's not a fit for us right now, we'll let you know clearly and promptly, rather than leaving you waiting.",
   },
   {
-    title: 'A direct conversation',
-    body: "If there's mutual interest, we move into a more detailed conversation — understanding your business further, answering your questions about us, and working out whether the fundamentals of a deal make sense for both sides. We encourage you to involve your own accountant and lawyer from this point, and we're comfortable working alongside your advisers throughout.",
+    title: 'Conversation and offer',
+    body: "If there's mutual interest, we move into a more detailed conversation — understanding your business further, answering your questions about us, and working out whether the fundamentals of a deal make sense for both sides. We'll put forward an indicative offer at this stage. We encourage you to involve your own accountant and lawyer from this point, and we're comfortable working alongside your advisers throughout.",
   },
   {
-    title: 'Due diligence and agreement',
-    body: "Once we've agreed on the broad terms, we move into due diligence — a closer look at your financials, contracts and operations — alongside drafting a formal agreement. We aim to keep this process efficient and to avoid unnecessary delays, while still being thorough enough to protect both parties.",
+    title: 'Due diligence and settlement',
+    body: "Once we've agreed on the broad terms, we move into due diligence — a closer look at your financials, contracts and operations — alongside drafting a formal agreement. We aim to keep this process efficient and to avoid unnecessary delays, while still being thorough enough to protect both parties. At settlement, ownership transfers and funds are released, with a transition period to suit your circumstances.",
+  },
+];
+
+const faqs = [
+  {
+    question: 'What does it cost me?',
+    answer:
+      "Nothing from us. There's no commission or broker fee at any stage. We'd recommend your own accountant and lawyer review any agreement before you sign — that's a cost you'd have in any sale, direct or through a broker.",
   },
   {
-    title: 'Settlement and transition',
-    body: "At settlement, ownership transfers and funds are released. We work with you on a transition period that suits your circumstances — whether that's a short handover or a longer period of involvement, depending on what works best for you, your staff, and the ongoing operation of the business.",
+    question: 'How quickly will I hear back?',
+    answer: "Within one week of submitting, every time — whether we're interested or not.",
+  },
+  {
+    question: 'What size businesses do you buy?',
+    answer:
+      'Businesses of all sizes across Australia, from small owner-operated businesses to larger established operations. For technology businesses, we also look at opportunities globally.',
+  },
+  {
+    question: 'Do I need financials to submit?',
+    answer:
+      'No. A short description is enough to start. Financials come later, once we take a closer look and there is mutual interest in continuing.',
+  },
+  {
+    question: 'Will I need to stay on after the sale?',
+    answer:
+      "This depends on the business and is discussed openly. Some owners stay on for a short handover period, others transition out quickly. We work out what suits both sides before settlement.",
+  },
+  {
+    question: 'What happens to my staff?',
+    answer:
+      'This also depends on the business and is discussed openly. As operators ourselves, continuity for staff and customers matters to how we evaluate a purchase — we are not buying to cut headcount and move on.',
+  },
+  {
+    question: "What if you're not interested?",
+    answer:
+      "We'll tell you clearly and promptly, within the week. There's no further obligation on your part, and nothing stops you from approaching another buyer or a broker afterwards.",
+  },
+  {
+    question: 'Can I still use a broker?',
+    answer:
+      "Yes. If you're already working with a broker, we're happy to deal with them on your behalf. Most owners who come to us directly do so because they'd prefer not to pay a commission, but it's entirely your choice.",
+  },
+  {
+    question: 'Do you buy businesses outside Australia?',
+    answer:
+      'Our primary focus is Australian businesses. For technology businesses specifically, we also consider opportunities globally.',
   },
 ];
 ---
 
 <BaseLayout
   title="How It Works"
-  description="How our process works, from submitting your business to receiving a response within one week, and why selling direct saves broker fees."
+  description="How our process works in detail, from submitting your business to settlement, what it costs you, and answers to common questions."
 >
   <section class="section">
     <div class="container container--narrow">
-      <p class="eyebrow-rule">How It Works</p>
+      <p class="eyebrow"><span class="numeral">01 —</span> The Process</p>
       <h1>A simple, direct process</h1>
       <p class="lead">
         We've designed our process to be straightforward and respectful of your time. There's no obligation at any
@@ -53,19 +96,42 @@ const steps = [
           </li>
         ))}
       </ol>
+    </div>
+  </section>
 
-      <h2 class="with-rule">Why selling direct saves broker fees</h2>
+  <section class="section section--alt">
+    <div class="container container--narrow">
+      <p class="eyebrow"><span class="numeral">02 —</span> What It Costs You</p>
+      <h2>Nothing from us</h2>
       <p>
         A business broker typically charges a commission of around 5% to 10% of the sale price. When you deal with
-        us directly, that cost disappears — there's no broker fee coming out of what you're paid. You'll likely
-        still want your own accountant and lawyer involved, but their fees are usually a small fraction of a
-        broker's commission, and are generally charged at a fixed or hourly rate rather than a percentage of your
-        sale price.
+        us directly, that cost disappears — there's no broker fee or commission coming out of what you're paid.
+      </p>
+      <p>
+        You'll likely still want your own accountant and lawyer involved, and we'd recommend it. Their fees are
+        usually a small fraction of a broker's commission, and are generally charged at a fixed or hourly rate
+        rather than a percentage of your sale price.
       </p>
       <p>
         Selling direct also tends to be faster. With fewer parties relaying information back and forth, decisions
         can be made more quickly, and you have direct visibility into where things stand at every stage.
       </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container container--narrow">
+      <p class="eyebrow"><span class="numeral">03 —</span> Frequently Asked Questions</p>
+      <h2>Common questions</h2>
+      <div class="faq-list">
+        {faqs.map((faq) => (
+          <details class="faq-item">
+            <summary>{faq.question}</summary>
+            <!-- VERIFY -->
+            <p>{faq.answer}</p>
+          </details>
+        ))}
+      </div>
 
       <div class="cta card">
         <h3>Ready to start the conversation?</h3>
@@ -106,9 +172,9 @@ const steps = [
   .timeline-marker {
     flex-shrink: 0;
     width: 48px;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--color-primary);
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--color-brass);
   }
 
   .timeline-content h2 {
@@ -118,6 +184,51 @@ const steps = [
 
   .timeline-content p {
     margin: 0;
+  }
+
+  .faq-list {
+    margin: 32px 0 24px;
+  }
+
+  .faq-item {
+    border-top: 1px solid var(--color-border);
+    padding: 20px 0;
+  }
+
+  .faq-item:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-item summary {
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.05rem;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::after {
+    content: '+';
+    font-size: 1.4rem;
+    font-weight: 400;
+    color: var(--color-primary);
+    margin-left: 16px;
+    flex-shrink: 0;
+  }
+
+  .faq-item[open] summary::after {
+    content: '\2212';
+  }
+
+  .faq-item p {
+    margin: 14px 0 0;
+    color: var(--color-muted);
   }
 
   .cta {

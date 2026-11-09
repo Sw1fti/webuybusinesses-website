@@ -53,8 +53,13 @@ const totalItems = groups.reduce((sum, group) => sum + group.items.length, 0);
 >
   <section class="section">
     <div class="container container--narrow">
-      <p class="eyebrow">Sale Readiness Checklist</p>
-      <h1>How ready is your business for sale?</h1>
+      <div class="header-row">
+        <div>
+          <p class="eyebrow-rule">Sale Readiness Checklist</p>
+          <h1>How ready is your business for sale?</h1>
+        </div>
+        <button type="button" class="btn btn-secondary print-btn" id="print-btn">Print Checklist</button>
+      </div>
       <p class="lead">
         Work through the items below at your own pace. Your progress is saved on this device so you can come back to
         it.
@@ -86,10 +91,12 @@ const totalItems = groups.reduce((sum, group) => sum + group.items.length, 0);
         </div>
       ))}
 
-      <div class="cta card">
-        <h3>Ready to take the next step?</h3>
-        <p>
-          You don't need to tick every box before reaching out — we're happy to talk at any stage of readiness.
+      <div class="result-panel card" id="result-panel">
+        <p class="eyebrow-rule">Your Result</p>
+        <h2 id="result-title">Early Days</h2>
+        <p id="result-body">
+          There's a good amount of preparation ahead, and that's completely normal this early on. Working through
+          the checklist at your own pace will put you in a stronger position.
         </p>
         <a href="/submit" class="btn btn-primary">Submit Your Business</a>
       </div>
@@ -100,6 +107,19 @@ const totalItems = groups.reduce((sum, group) => sum + group.items.length, 0);
 <style>
   .container--narrow {
     max-width: 720px;
+  }
+
+  .header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .print-btn {
+    flex-shrink: 0;
+    padding: 10px 20px;
+    font-size: 0.9rem;
   }
 
   .lead {
@@ -113,8 +133,7 @@ const totalItems = groups.reduce((sum, group) => sum + group.items.length, 0);
   }
 
   .progress-bar {
-    height: 14px;
-    border-radius: 999px;
+    height: 2px;
     background: var(--color-border);
     overflow: hidden;
   }
@@ -145,19 +164,20 @@ const totalItems = groups.reduce((sum, group) => sum + group.items.length, 0);
   .checklist-item {
     display: flex;
     align-items: flex-start;
-    gap: 12px;
-    padding: 12px 16px;
-    border: 1px solid var(--color-border);
-    border-radius: 8px;
-    background: var(--color-card);
-    margin-bottom: 10px;
+    gap: 14px;
+    padding: 14px 0;
+    border-top: 1px solid var(--color-border);
     font-weight: 500;
     cursor: pointer;
   }
 
+  .checklist-group ul li:last-child .checklist-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
   .checklist-checkbox {
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     margin-top: 2px;
     accent-color: var(--color-primary);
     flex-shrink: 0;
@@ -168,9 +188,16 @@ const totalItems = groups.reduce((sum, group) => sum + group.items.length, 0);
     text-decoration: line-through;
   }
 
-  .cta {
+  .result-panel {
     margin-top: 48px;
     text-align: center;
+  }
+
+  @media print {
+    .print-btn,
+    .mobile-submit-bar {
+      display: none !important;
+    }
   }
 </style>
 
@@ -179,6 +206,24 @@ const totalItems = groups.reduce((sum, group) => sum + group.items.length, 0);
   const checkboxes = document.querySelectorAll<HTMLInputElement>('.checklist-checkbox');
   const progressFill = document.getElementById('progress-fill') as HTMLDivElement;
   const progressText = document.getElementById('progress-text') as HTMLParagraphElement;
+  const resultTitle = document.getElementById('result-title') as HTMLHeadingElement;
+  const resultBody = document.getElementById('result-body') as HTMLParagraphElement;
+  const printBtn = document.getElementById('print-btn') as HTMLButtonElement;
+
+  const results = {
+    ready: {
+      title: 'Ready',
+      body: "Your business looks well prepared for a sale process. There's no need to wait on our account — we're happy to start the conversation whenever suits you.",
+    },
+    close: {
+      title: 'Getting Close',
+      body: "You're most of the way there. A little more preparation in the areas you haven't ticked off will help the process move faster, but there's no need to wait until everything is perfect.",
+    },
+    early: {
+      title: 'Early Days',
+      body: "There's a good amount of preparation ahead, and that's completely normal this early on. Working through the checklist at your own pace will put you in a stronger position — and we're happy to talk at any stage.",
+    },
+  };
 
   function loadState(): Record<string, boolean> {
     try {
@@ -203,6 +248,10 @@ const totalItems = groups.reduce((sum, group) => sum + group.items.length, 0);
     const percent = total === 0 ? 0 : Math.round((checked / total) * 100);
     progressFill.style.width = `${percent}%`;
     progressText.textContent = `${checked} of ${total} complete`;
+
+    const tier = percent >= 80 ? results.ready : percent >= 40 ? results.close : results.early;
+    resultTitle.textContent = tier.title;
+    resultBody.textContent = tier.body;
   }
 
   const state = loadState();
@@ -219,6 +268,8 @@ const totalItems = groups.reduce((sum, group) => sum + group.items.length, 0);
       updateProgress();
     });
   });
+
+  printBtn?.addEventListener('click', () => window.print());
 
   updateProgress();
 </script>

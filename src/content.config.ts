@@ -15,6 +15,7 @@ const articles = defineCollection({
       'Legal',
     ]),
     date: z.coerce.date(),
+    startHere: z.boolean().optional(),
   }),
 });
 

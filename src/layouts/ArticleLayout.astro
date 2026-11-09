@@ -2,14 +2,29 @@
 import BaseLayout from './BaseLayout.astro';
 import DisclaimerNote from '../components/DisclaimerNote.astro';
 
+interface RelatedArticle {
+  id: string;
+  title: string;
+  description: string;
+}
+
+interface Heading {
+  depth: number;
+  text: string;
+  slug: string;
+}
+
 interface Props {
   title: string;
   description: string;
   category: string;
   date: Date;
+  readingTime: number;
+  headings?: Heading[];
+  related?: RelatedArticle[];
 }
 
-const { title, description, category, date } = Astro.props;
+const { title, description, category, date, readingTime, headings = [], related = [] } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const formattedDate = date.toLocaleDateString('en-AU', {
@@ -17,6 +32,9 @@ const formattedDate = date.toLocaleDateString('en-AU', {
   month: 'long',
   year: 'numeric',
 });
+
+const tocHeadings = headings.filter((h) => h.depth === 2);
+const showToc = tocHeadings.length >= 3;
 
 const articleSchema = {
   '@context': 'https://schema.org',
@@ -41,9 +59,20 @@ const articleSchema = {
 
   <article class="section">
     <div class="container container--narrow">
-      <p class="eyebrow">{category}</p>
+      <p class="eyebrow-rule">{category}</p>
       <h1>{title}</h1>
-      <p class="article-meta">{formattedDate}</p>
+      <p class="article-meta">{formattedDate} &middot; {readingTime} min read</p>
+
+      {showToc && (
+        <nav class="toc" aria-label="Table of contents">
+          <p class="toc-label">In This Article</p>
+          <ul>
+            {tocHeadings.map((heading) => (
+              <li><a href={`#${heading.slug}`}>{heading.text}</a></li>
+            ))}
+          </ul>
+        </nav>
+      )}
 
       <div class="article-body">
         <slot />
@@ -51,11 +80,25 @@ const articleSchema = {
 
       <DisclaimerNote />
 
-      <div class="article-cta card">
+      <div class="article-cta">
         <h3>Thinking about selling?</h3>
-        <p>We'd welcome the chance to have a confidential conversation about your business.</p>
+        <p>We'd welcome the chance to talk through your business, with no obligation.</p>
         <a href="/submit" class="btn btn-primary">Submit Your Business</a>
       </div>
+
+      {related.length > 0 && (
+        <div class="related">
+          <p class="eyebrow-rule">Related Reading</p>
+          <ul class="related-list">
+            {related.map((article) => (
+              <li>
+                <a href={`/resources/${article.id}`}>{article.title}</a>
+                <p>{article.description}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </div>
   </article>
 </BaseLayout>
@@ -68,6 +111,40 @@ const articleSchema = {
   .article-meta {
     color: var(--color-muted);
     margin-bottom: 40px;
+  }
+
+  .toc {
+    border: 1px solid var(--color-border);
+    border-left: 2px solid var(--color-brass);
+    padding: 24px 28px;
+    margin-bottom: 48px;
+  }
+
+  .toc-label {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--color-brass);
+    margin-bottom: 14px;
+  }
+
+  .toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+
+  .toc a {
+    color: var(--color-charcoal);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .toc a:hover {
+    color: var(--color-primary);
   }
 
   .article-body :global(h2) {
@@ -86,6 +163,44 @@ const articleSchema = {
 
   .article-cta {
     margin-top: 48px;
+    padding: 40px 0;
+    border-top: 1px solid var(--color-brass-dim);
+    border-bottom: 1px solid var(--color-brass-dim);
     text-align: center;
+  }
+
+  .related {
+    margin-top: 48px;
+  }
+
+  .related-list {
+    list-style: none;
+    margin: 24px 0 0;
+    padding: 0;
+  }
+
+  .related-list li {
+    border-top: 1px solid var(--color-border);
+    padding: 20px 0;
+  }
+
+  .related-list li:last-child {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .related-list a {
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--color-charcoal);
+  }
+
+  .related-list a:hover {
+    color: var(--color-primary);
+  }
+
+  .related-list p {
+    margin: 6px 0 0;
+    color: var(--color-muted);
+    font-size: 0.95rem;
   }
 </style>

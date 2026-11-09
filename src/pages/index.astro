@@ -4,7 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SubmissionForm from '../components/SubmissionForm.astro';
 
 const allArticles = await getCollection('articles');
-const startHere = allArticles.find((a) => a.id === 'how-to-sell-your-business-in-australia');
+const startHere = allArticles.find((a) => a.data.startHere);
 
 const sectors = [
   'Fitness',
@@ -77,7 +77,6 @@ const faqPreview = [
   <section class="hero">
     <div class="hero-grain" aria-hidden="true"></div>
     <div class="container hero-inner">
-      <p class="eyebrow hero-eyebrow">Private Acquisitions — Australia</p>
       <h1>We buy businesses. Simply, quickly, and the right way.</h1>
       <p class="hero-sub">
         Sell directly to private buyers who continue operating the businesses they acquire. No broker. No broker
@@ -273,10 +272,6 @@ const faqPreview = [
     z-index: 1;
     padding-top: 120px;
     padding-bottom: 80px;
-  }
-
-  .hero-eyebrow {
-    color: var(--color-brass);
   }
 
   .hero h1 {
