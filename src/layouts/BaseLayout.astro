@@ -12,7 +12,7 @@ interface Props {
 }
 
 const { title, description, type = 'website', headerVariant = 'solid' } = Astro.props;
-const pageTitle = `${title} | We Buy Businesses`;
+const pageTitle = `${title} | Business Buyer`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -41,7 +41,7 @@ const showMobileBar = path !== '/submit' && path !== '/thank-you';
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonicalURL} />
-    <meta property="og:site_name" content="We Buy Businesses" />
+    <meta property="og:site_name" content="Business Buyer" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={pageTitle} />
