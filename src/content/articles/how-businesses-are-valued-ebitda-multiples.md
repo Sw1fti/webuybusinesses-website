@@ -48,7 +48,7 @@ The right method depends on the nature of the business, and it's worth discussin
 
 While a proper valuation should always involve your accountant, or a professional valuer for larger or more complex transactions, it can help to get a general, ballpark estimate early on — if only to sense-check any offer you receive.
 
-Our [valuation calculator](/valuation-calculator) lets you enter your annual EBITDA and apply a multiple to see an estimated value range, along with an indicative figure for where that value might sit in five years if your business keeps growing. It's a general estimate only, not a formal valuation, but it's a useful starting point for a conversation.
+A simple way to do this is to multiply your annual EBITDA by a multiple appropriate to your industry and size. It's a rough exercise, not a formal valuation, but it's a useful starting point before any conversation with a buyer.
 
 ## A note on expectations
 

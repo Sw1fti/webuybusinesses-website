@@ -31,7 +31,7 @@ If your bookkeeping has been inconsistent, or your accountant hasn't produced ma
 
 Most small and mid-sized businesses in Australia are valued using a multiple of earnings, usually EBITDA (earnings before interest, tax, depreciation and amortisation). The multiple applied depends on the industry, the size of the business, how reliant it is on the owner, and current market conditions.
 
-It's worth getting a general sense of value before you start any conversations, so you can assess whether an offer is reasonable. Our [valuation calculator](/valuation-calculator) can give you a rough, general estimate based on your EBITDA and an appropriate multiple range — though any serious valuation should also involve your accountant or a professional valuer, particularly if a large amount of money or a complex structure is involved.
+It's worth getting a general sense of value before you start any conversations, so you can assess whether an offer is reasonable. A rough estimate based on your EBITDA and an appropriate multiple range is a useful starting point — though any serious valuation should also involve your accountant or a professional valuer, particularly if a large amount of money or a complex structure is involved.
 
 ## 4. Decide how you want to sell
 

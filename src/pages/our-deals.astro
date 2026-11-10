@@ -1,0 +1,257 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const examples = [
+  {
+    label: 'Example — Staged Exit',
+    title: 'An Operator Who Wanted Three More Years',
+    body: "We acquired a business where the operator wanted to keep running it day-to-day for another three years before stepping back. Rather than forcing an immediate handover, we built the deal around that timeline — giving them certainty on price now, and a clear, agreed path to step away fully once they were ready.",
+  },
+  {
+    label: 'Example — Clean Exit',
+    title: 'A 100% Cash Buyout',
+    body: "In other cases, owners want a complete and immediate exit. We've completed straightforward 100% cash purchases, with full control transferring at settlement and no ongoing involvement required from the previous owner.",
+  },
+];
+
+const structures = [
+  {
+    title: 'Earn-Outs',
+    body: "Part of the price is tied to the business's performance after settlement.",
+  },
+  {
+    title: 'Spin-Outs',
+    body: 'Acquiring a specific division or part of a business, rather than the whole entity.',
+  },
+  {
+    title: 'IP Licensing',
+    body: 'Acquiring rights to use specific intellectual property, separate from the broader business.',
+  },
+  {
+    title: 'Asset Purchases',
+    body: 'Buying specific assets rather than the legal entity that owns them.',
+  },
+  {
+    title: 'Full Acquisitions',
+    body: 'Complete ownership transfer, with or without the outgoing owner remaining involved.',
+  },
+  {
+    title: 'Cash Buyouts',
+    body: 'A straightforward, complete exit, paid in full at settlement.',
+  },
+];
+
+const beyond = [
+  {
+    title: 'Fund Investments',
+    body: 'Investing through a fund structure rather than a direct purchase.',
+  },
+  {
+    title: 'Strategic and Sponsor-Backed Investments',
+    body: 'Partnering with strategic investors or private equity sponsors.',
+  },
+  {
+    title: 'Sponsor Pools',
+    body: 'Participating alongside other sponsors in a syndicated investment.',
+  },
+  {
+    title: "Selling Businesses We've Built",
+    body: "We've also been the seller, when the time was right for a business we'd grown.",
+  },
+];
+
+const whyNotBroker = [
+  {
+    title: 'Flexibility',
+    body: 'We structure each deal around what actually works for you and the business — earn-outs, staged exits, asset purchases or straightforward cash buyouts.',
+  },
+  {
+    title: 'Speed',
+    body: 'We decide for ourselves. No committee of partners to run past, no waiting on a buyer pool to form.',
+  },
+  {
+    title: 'No Broker Fees',
+    body: 'Nothing comes out of your price for arranging the sale, whichever structure we land on.',
+  },
+];
+---
+
+<BaseLayout
+  title="Our Deals"
+  description="Examples of how we've structured past acquisitions, the range of deal structures we work with, and why owners choose us over a broker."
+>
+  <section class="section">
+    <div class="container container--narrow">
+      <p class="eyebrow-rule">Our Deals</p>
+      <h1>How We've Structured Deals Before</h1>
+      <p class="lead">
+        Not every business sale needs to look the same. Here are two examples of how we've approached past
+        acquisitions, followed by the range of structures we work with. Details are kept general to avoid
+        identifying anyone involved.
+      </p>
+
+      <div class="examples">
+        {examples.map((example) => (
+          <div class="example">
+            <p class="eyebrow-rule">{example.label}</p>
+            <h2>{example.title}</h2>
+            <p>{example.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container reveal">
+      <p class="eyebrow-rule">The Structures We Work With</p>
+      <h2>Six ways a deal can come together</h2>
+      <ul class="structure-list">
+        {structures.map((item) => (
+          <li>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container reveal">
+      <p class="eyebrow-rule">Beyond Direct Acquisitions</p>
+      <h2>We also invest, and sometimes sell</h2>
+      <ul class="structure-list">
+        {beyond.map((item) => (
+          <li>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="container reveal">
+      <p class="eyebrow">Why Not A Broker?</p>
+      <h2>Flexibility, speed, no broker fees</h2>
+      <div class="why-row">
+        {whyNotBroker.map((item, index) => (
+          <div class="why-col">
+            <p class="why-number">{String(index + 1)}</p>
+            <h3>{item.title}</h3>
+            <p>{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container container--narrow reveal">
+      <div class="cta card">
+        <h3>Have a structure in mind?</h3>
+        <p>Tell us about your business and what you're hoping for, and we'll talk through what might work.</p>
+        <a href="/submit" class="btn btn-primary">Submit Your Business</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .container--narrow {
+    max-width: 760px;
+  }
+
+  .lead {
+    font-size: 1.15rem;
+    color: var(--color-muted);
+    margin-bottom: 40px;
+  }
+
+  .examples {
+    display: grid;
+    gap: 48px;
+  }
+
+  .example {
+    border-top: 1px solid var(--color-border);
+    padding-top: 32px;
+  }
+
+  .structure-list {
+    list-style: none;
+    margin: 32px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0 40px;
+  }
+
+  .structure-list li {
+    border-top: 1px solid var(--color-border);
+    padding: 24px 0;
+  }
+
+  .structure-list h3 {
+    margin-bottom: 8px;
+  }
+
+  .structure-list p {
+    margin: 0;
+    color: var(--color-muted);
+  }
+
+  @media (max-width: 760px) {
+    .structure-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .why-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 48px;
+  }
+
+  .why-col {
+    padding: 0 32px;
+    border-left: 1px solid var(--color-ink-border);
+  }
+
+  .why-col:first-child {
+    padding-left: 0;
+    border-left: none;
+  }
+
+  .why-number {
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    font-weight: 400;
+    color: var(--color-brass);
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  @media (max-width: 900px) {
+    .why-row {
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+    .why-col {
+      padding: 0;
+      border-left: none;
+      border-top: 1px solid var(--color-ink-border);
+      padding-top: 24px;
+    }
+    .why-col:first-child {
+      border-top: none;
+      padding-top: 0;
+    }
+  }
+
+  .cta {
+    text-align: center;
+  }
+</style>

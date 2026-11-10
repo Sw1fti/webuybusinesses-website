@@ -54,8 +54,14 @@ const industries = [
   </div>
 
   <div class="form-row">
+    <label for={`${idPrefix}-phone`}>Phone Number</label>
+    <input type="tel" id={`${idPrefix}-phone`} name="Phone" placeholder="Optional" />
+    <p class="form-hint">Leave this if you'd rather we call you instead of emailing — happy to start that way too.</p>
+  </div>
+
+  <div class="form-row">
     <label for={`${idPrefix}-subject`}>Subject *</label>
-    <input type="text" id={`${idPrefix}-subject`} name="Subject" required placeholder="e.g. Established landscaping business, Brisbane" />
+    <input type="text" id={`${idPrefix}-subject`} name="Subject" required placeholder="e.g. Industrial manufacturing business, Brisbane" />
   </div>
 
   <div class="form-row">
@@ -92,7 +98,11 @@ const industries = [
   <div class="form-row">
     <label for={`${idPrefix}-file`}>Financials or Pitch Deck</label>
     <input type="file" id={`${idPrefix}-file`} name="Attachment" accept=".pdf,.xlsx,.docx,.pptx" />
-    <p class="form-hint">PDF, XLSX, DOCX or PPTX. Optional, but helpful if you have something ready to share.</p>
+    <p class="form-hint">
+      PDF, XLSX, DOCX or PPTX. We're typically interested in the last three years of financials — tax returns,
+      profit and loss, or whatever you have on hand. Optional at this stage; attach what you have, or we can ask
+      for more later.
+    </p>
   </div>
 
   <button type="submit" class="btn btn-primary">Submit Your Business</button>

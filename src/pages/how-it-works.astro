@@ -78,7 +78,7 @@ const faqs = [
 >
   <section class="section">
     <div class="container container--narrow">
-      <p class="eyebrow"><span class="numeral">01 —</span> The Process</p>
+      <p class="eyebrow"><span class="numeral">1 —</span> The Process</p>
       <h1>A simple, direct process</h1>
       <p class="lead">
         We've designed our process to be straightforward and respectful of your time. There's no obligation at any
@@ -88,7 +88,7 @@ const faqs = [
       <ol class="timeline">
         {steps.map((step, index) => (
           <li class="timeline-item">
-            <span class="timeline-marker">{String(index + 1).padStart(2, '0')}</span>
+            <span class="timeline-marker">{String(index + 1)}</span>
             <div class="timeline-content">
               <h2>{step.title}</h2>
               <p>{step.body}</p>
@@ -101,7 +101,7 @@ const faqs = [
 
   <section class="section section--alt">
     <div class="container container--narrow">
-      <p class="eyebrow"><span class="numeral">02 —</span> What It Costs You</p>
+      <p class="eyebrow"><span class="numeral">2 —</span> What It Costs You</p>
       <h2>Nothing from us</h2>
       <p>
         A business broker typically charges a commission of around 5% to 10% of the sale price. When you deal with
@@ -121,7 +121,7 @@ const faqs = [
 
   <section class="section">
     <div class="container container--narrow">
-      <p class="eyebrow"><span class="numeral">03 —</span> Frequently Asked Questions</p>
+      <p class="eyebrow"><span class="numeral">3 —</span> Frequently Asked Questions</p>
       <h2>Common questions</h2>
       <div class="faq-list">
         {faqs.map((faq) => (
