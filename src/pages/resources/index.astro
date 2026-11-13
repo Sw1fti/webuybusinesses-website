@@ -80,7 +80,7 @@ const categories = [
 
   <section class="section section--alt">
     <div class="container">
-      <h2>All Resources</h2>
+      <h2 id="all-resources">All Resources</h2>
       <div class="all-grid">
         {allArticles.map((article) => (
           <a class="article-tile" href={`/resources/${article.id}`} data-category={article.data.category}>
@@ -353,6 +353,7 @@ const categories = [
   const buttons = document.querySelectorAll<HTMLButtonElement>('.sidebar-link');
   const cards = document.querySelectorAll<HTMLAnchorElement>('.article-tile');
   const emptyState = document.getElementById('empty-state');
+  const allResourcesHeading = document.getElementById('all-resources');
 
   buttons.forEach((button) => {
     button.addEventListener('click', () => {
@@ -371,6 +372,8 @@ const categories = [
       if (emptyState) {
         emptyState.hidden = visibleCount !== 0;
       }
+
+      allResourcesHeading?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   });
 </script>

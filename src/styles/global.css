@@ -145,23 +145,12 @@ a.card:hover {
 }
 
 .eyebrow-rule {
-  display: flex;
-  align-items: center;
-  gap: 12px;
   margin-bottom: 18px;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: 0.8rem;
   font-weight: 700;
   color: var(--color-teal);
-}
-
-.eyebrow-rule::before {
-  content: '';
-  width: 32px;
-  height: 1px;
-  background: var(--color-teal);
-  flex-shrink: 0;
 }
 
 .btn {
