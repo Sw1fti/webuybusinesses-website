@@ -6,7 +6,8 @@
   --color-teal-dim: rgba(63, 107, 106, 0.4);
 
   /* light sections */
-  --color-bg: #f1f2f3;
+  --color-bg: #ffffff;
+  --color-bg-alt: #f1f2f3;
   --color-card: #ffffff;
   --color-charcoal: #1f1b1a;
   --color-muted: #5b6b7a;
@@ -88,7 +89,7 @@ a:hover {
 }
 
 .section--alt {
-  background: var(--color-card);
+  background: var(--color-bg-alt);
 }
 
 .section--dark {
