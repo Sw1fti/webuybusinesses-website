@@ -113,18 +113,18 @@ const faqPreview = [
   </section>
 
   <section class="section section--dark overflow-hidden look-for-section">
-    <div class="container reveal">
-      <p class="eyebrow">What We Look For</p>
-      <h2>Businesses of every size, across Australia</h2>
-      <p class="look-for-body">We consider businesses of all sizes across Australia.</p>
-      <p class="look-for-body">For technology and healthcare platforms, we also look for opportunities globally.</p>
-    </div>
     <div class="marquee" aria-label={`Sectors we've acquired and built in: ${sectors.join(', ')}`}>
       <div class="marquee-track">
         {[...sectors, ...sectors].map((sector) => (
           <span class="marquee-item">{sector}</span>
         ))}
       </div>
+    </div>
+    <div class="container reveal look-for-content">
+      <p class="eyebrow">What We Look For</p>
+      <h2>Businesses of every size, across Australia</h2>
+      <p class="look-for-body">We consider businesses of all sizes across Australia.</p>
+      <p class="look-for-body">For technology and healthcare platforms, we also look for opportunities globally.</p>
     </div>
   </section>
 
@@ -445,13 +445,16 @@ const faqPreview = [
   }
 
   .look-for-section {
-    padding-bottom: 0;
+    padding-top: 0;
+  }
+
+  .look-for-content {
+    margin-top: 56px;
   }
 
   .marquee {
-    margin-top: 56px;
     overflow: hidden;
-    border-top: 1px solid var(--color-ink-border);
+    border-bottom: 1px solid var(--color-ink-border);
     padding: 28px 0;
   }
 
