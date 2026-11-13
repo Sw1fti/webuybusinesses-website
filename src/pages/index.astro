@@ -112,6 +112,22 @@ const faqPreview = [
     </div>
   </section>
 
+  <section class="section section--dark overflow-hidden">
+    <div class="container reveal">
+      <p class="eyebrow">What We Look For</p>
+      <h2>Businesses of every size, across Australia</h2>
+      <p class="look-for-body">We consider businesses of all sizes across Australia.</p>
+      <p class="look-for-body">For technology and healthcare platforms, we also look for opportunities globally.</p>
+    </div>
+    <div class="marquee" aria-label={`Sectors we've acquired and built in: ${sectors.join(', ')}`}>
+      <div class="marquee-track">
+        {[...sectors, ...sectors].map((sector) => (
+          <span class="marquee-item">{sector}</span>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container reveal">
       <p class="eyebrow">Why Sell Direct</p>
@@ -158,22 +174,6 @@ const faqPreview = [
         ))}
       </ol>
       <a href="/how-it-works" class="link-more">Read the full process &rarr;</a>
-    </div>
-  </section>
-
-  <section class="section section--dark overflow-hidden">
-    <div class="container reveal">
-      <p class="eyebrow">What We Look For</p>
-      <h2>Businesses of every size, across Australia</h2>
-      <p class="look-for-body">We consider businesses of all sizes across Australia.</p>
-      <p class="look-for-body">For technology and healthcare platforms, we also look for opportunities globally.</p>
-    </div>
-    <div class="marquee" aria-label={`Sectors we've acquired and built in: ${sectors.join(', ')}`}>
-      <div class="marquee-track">
-        {[...sectors, ...sectors].map((sector) => (
-          <span class="marquee-item">{sector}</span>
-        ))}
-      </div>
     </div>
   </section>
 
