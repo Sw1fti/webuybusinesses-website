@@ -2,8 +2,8 @@
   /* core palette */
   --color-primary: #7a1f2b;
   --color-primary-dark: #5e1620;
-  --color-cta: #af2c3d;
-  --color-cta-dark: #93252f;
+  --color-bright: #e5383b;
+  --color-bright-dark: #ba181b;
   --color-brass: #b08d57;
   --color-brass-dim: rgba(176, 141, 87, 0.4);
 
@@ -185,15 +185,25 @@ h2.with-rule {
 }
 
 .btn-primary {
-  background: var(--color-cta);
-  border-color: var(--color-cta);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
   color: #fff;
 }
 
 .btn-primary:hover {
-  background: var(--color-cta-dark);
-  border-color: var(--color-cta-dark);
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
   color: #fff;
+}
+
+.btn-bright {
+  background: var(--color-bright);
+  border-color: var(--color-bright);
+}
+
+.btn-bright:hover {
+  background: var(--color-bright-dark);
+  border-color: var(--color-bright-dark);
 }
 
 .btn-secondary {
@@ -372,7 +382,7 @@ textarea:focus {
   .mobile-submit-bar a {
     display: block;
     text-align: center;
-    background: var(--color-primary);
+    background: var(--color-bright);
     color: #fff;
     text-decoration: none;
     font-weight: 600;
