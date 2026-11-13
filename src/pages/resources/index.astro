@@ -7,8 +7,8 @@ const allArticles = (await getCollection('articles')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 
-const featured = allArticles.find((a) => a.data.startHere);
-const otherArticles = allArticles.filter((a) => a.id !== featured?.id);
+const featured = allArticles.find((a) => a.data.startHere) ?? allArticles[0];
+const latest = allArticles.filter((a) => a.id !== featured?.id).slice(0, 3);
 
 const categories = [
   'Selling a Business',
@@ -33,35 +33,68 @@ const categories = [
         one.
       </p>
 
-      {featured && (
-        <a class="featured-card" href={`/resources/${featured.id}`}>
-          <span class="not-ready-label">Start Here</span>
-          <h2>{featured.data.title}</h2>
-          <p>{featured.data.description}</p>
-          <span class="featured-meta">{getReadingTime(featured.body ?? '')} min read</span>
-        </a>
-      )}
+      <div class="insights-layout">
+        <aside class="insights-sidebar">
+          <nav class="sidebar-nav" aria-label="Filter by category">
+            <button type="button" class="sidebar-link is-active" data-filter="all">All Articles</button>
+            {categories.map((category) => (
+              <button type="button" class="sidebar-link" data-filter={category}>{category}</button>
+            ))}
+          </nav>
+          <div class="sidebar-cta">
+            <h3>Thinking About Selling?</h3>
+            <p>Tell us about your business and we'll respond within a week.</p>
+            <a href="/submit" class="btn btn-primary">Submit Your Business</a>
+          </div>
+        </aside>
 
-      <div class="filters" role="group" aria-label="Filter by category">
-        <button type="button" class="filter-btn is-active" data-filter="all">All</button>
-        {categories.map((category) => (
-          <button type="button" class="filter-btn" data-filter={category}>{category}</button>
+        {featured && (
+          <a class="featured-card" href={`/resources/${featured.id}`}>
+            <div
+              class="featured-image"
+              style={featured.data.image ? `background-image: url(${featured.data.image})` : undefined}
+            >
+            </div>
+            <span class="featured-label">{featured.data.category}</span>
+            <h2>{featured.data.title}</h2>
+            <p>{featured.data.description}</p>
+            <span class="featured-meta">{getReadingTime(featured.body ?? '')} min read</span>
+          </a>
+        )}
+
+        <aside class="insights-latest">
+          <h3>The Latest</h3>
+          <ul>
+            {latest.map((article) => (
+              <li>
+                <span class="latest-category">{article.data.category}</span>
+                <a href={`/resources/${article.id}`}>{article.data.title}</a>
+                <span class="latest-meta">{getReadingTime(article.body ?? '')} min read</span>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt">
+    <div class="container">
+      <h2>All Resources</h2>
+      <div class="all-grid">
+        {allArticles.map((article) => (
+          <a class="article-tile" href={`/resources/${article.id}`} data-category={article.data.category}>
+            <div
+              class="tile-image"
+              style={article.data.image ? `background-image: url(${article.data.image})` : undefined}
+            >
+            </div>
+            <span class="tile-category">{article.data.category}</span>
+            <h3>{article.data.title}</h3>
+            <span class="tile-meta">{getReadingTime(article.body ?? '')} min read</span>
+          </a>
         ))}
       </div>
-
-      <ul class="article-list">
-        {otherArticles.map((article) => (
-          <li class="article-item" data-category={article.data.category}>
-            <a href={`/resources/${article.id}`}>
-              <span class="article-category">{article.data.category}</span>
-              <h3>{article.data.title}</h3>
-              <p>{article.data.description}</p>
-              <span class="article-meta">{getReadingTime(article.body ?? '')} min read</span>
-            </a>
-          </li>
-        ))}
-      </ul>
-
       <p class="empty-state" id="empty-state" hidden>No articles in this category yet.</p>
     </div>
   </section>
@@ -72,19 +105,83 @@ const categories = [
     font-size: 1.15rem;
     color: var(--color-muted);
     max-width: 640px;
+    margin-bottom: 48px;
+  }
+
+  /* --- top layout: sidebar / featured / latest --- */
+  .insights-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr 280px;
+    gap: 48px;
+    align-items: start;
+  }
+
+  .insights-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .sidebar-link {
+    font-family: inherit;
+    text-align: left;
+    font-size: 0.95rem;
+    font-weight: 600;
+    padding: 8px 0;
+    border: none;
+    background: none;
+    color: var(--color-charcoal);
+    cursor: pointer;
+  }
+
+  .sidebar-link.is-active,
+  .sidebar-link:hover {
+    color: var(--color-primary);
+  }
+
+  .sidebar-cta {
+    padding-top: 28px;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .sidebar-cta h3 {
+    font-size: 1.05rem;
+    margin-bottom: 8px;
+  }
+
+  .sidebar-cta p {
+    font-size: 0.9rem;
+    color: var(--color-muted);
+    margin-bottom: 16px;
+  }
+
+  .sidebar-cta .btn {
+    padding: 10px 18px;
+    font-size: 0.88rem;
   }
 
   .featured-card {
     display: block;
-    margin: 40px 0;
-    padding: 36px 0;
-    border-top: 1px solid var(--color-teal-dim);
-    border-bottom: 1px solid var(--color-teal-dim);
     text-decoration: none;
     color: inherit;
   }
 
-  .not-ready-label {
+  .featured-image {
+    aspect-ratio: 16 / 10;
+    margin-bottom: 20px;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-border);
+    background-image: linear-gradient(135deg, rgba(63, 107, 106, 0.3), rgba(23, 10, 12, 0.45));
+  }
+
+  .featured-label {
     text-transform: uppercase;
     letter-spacing: 0.1em;
     font-size: 0.78rem;
@@ -97,7 +194,6 @@ const categories = [
   }
 
   .featured-card p {
-    max-width: 640px;
     margin-bottom: 10px;
   }
 
@@ -110,76 +206,141 @@ const categories = [
     font-size: 0.9rem;
   }
 
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin: 32px 0 8px;
+  .insights-latest h3 {
+    font-size: 1.1rem;
+    margin-bottom: 16px;
   }
 
-  .filter-btn {
-    font-family: inherit;
-    font-size: 0.9rem;
-    font-weight: 600;
-    padding: 8px 16px;
-    border-radius: 999px;
-    border: 1px solid var(--color-border);
-    background: transparent;
-    color: var(--color-charcoal);
-    cursor: pointer;
-  }
-
-  .filter-btn.is-active {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: #fff;
-  }
-
-  .article-list {
+  .insights-latest ul {
     list-style: none;
-    margin: 24px 0 0;
+    margin: 0;
     padding: 0;
   }
 
-  .article-item {
+  .insights-latest li {
+    padding: 18px 0;
     border-top: 1px solid var(--color-border);
-    padding: 28px 0;
   }
 
-  .article-item:last-child {
+  .insights-latest li:last-child {
     border-bottom: 1px solid var(--color-border);
   }
 
-  .article-item a {
+  .latest-category {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--color-teal);
+    margin-bottom: 6px;
+  }
+
+  .insights-latest a {
+    display: block;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--color-charcoal);
+    margin-bottom: 6px;
+  }
+
+  .insights-latest a:hover {
+    color: var(--color-primary);
+  }
+
+  .latest-meta {
+    color: var(--color-muted);
+    font-size: 0.82rem;
+  }
+
+  @media (max-width: 1080px) {
+    .insights-layout {
+      grid-template-columns: 1fr 1fr;
+    }
+    .insights-sidebar {
+      grid-column: 1 / -1;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .sidebar-nav {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .sidebar-cta {
+      border-top: none;
+      padding-top: 0;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .insights-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* --- all resources grid --- */
+  h2 {
+    margin-bottom: 32px;
+  }
+
+  .all-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px 24px;
+  }
+
+  .article-tile {
     display: block;
     text-decoration: none;
     color: inherit;
   }
 
-  .article-category {
+  .tile-image {
+    aspect-ratio: 4 / 3;
+    margin-bottom: 14px;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--color-border);
+    background-image: linear-gradient(135deg, rgba(63, 107, 106, 0.3), rgba(23, 10, 12, 0.45));
+  }
+
+  .tile-category {
+    display: block;
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    font-size: 0.78rem;
+    font-size: 0.72rem;
     font-weight: 700;
     color: var(--color-teal);
-  }
-
-  .article-item h3 {
-    margin: 10px 0 8px;
-  }
-
-  .article-item:hover h3 {
-    color: var(--color-primary);
-  }
-
-  .article-item p {
-    color: var(--color-muted);
     margin-bottom: 8px;
   }
 
-  .article-meta {
+  .article-tile h3 {
+    font-size: 1rem;
+    margin: 0 0 8px;
+  }
+
+  .article-tile:hover h3 {
+    color: var(--color-primary);
+  }
+
+  .tile-meta {
     color: var(--color-muted);
-    font-size: 0.88rem;
+    font-size: 0.82rem;
+  }
+
+  @media (max-width: 1080px) {
+    .all-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 560px) {
+    .all-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
   .empty-state {
@@ -189,8 +350,8 @@ const categories = [
 </style>
 
 <script>
-  const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
-  const cards = document.querySelectorAll<HTMLLIElement>('.article-item');
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.sidebar-link');
+  const cards = document.querySelectorAll<HTMLAnchorElement>('.article-tile');
   const emptyState = document.getElementById('empty-state');
 
   buttons.forEach((button) => {

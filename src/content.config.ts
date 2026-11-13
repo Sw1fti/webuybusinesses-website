@@ -16,6 +16,7 @@ const articles = defineCollection({
     ]),
     date: z.coerce.date(),
     startHere: z.boolean().optional(),
+    image: z.string().optional(),
   }),
 });
 
