@@ -2,8 +2,6 @@
   /* core palette */
   --color-primary: #7a1f2b;
   --color-primary-dark: #5e1620;
-  --color-bright: #e5383b;
-  --color-bright-dark: #ba181b;
   --color-brass: #b08d57;
   --color-brass-dim: rgba(176, 141, 87, 0.4);
 
@@ -196,16 +194,6 @@ h2.with-rule {
   color: #fff;
 }
 
-.btn-bright {
-  background: var(--color-bright);
-  border-color: var(--color-bright);
-}
-
-.btn-bright:hover {
-  background: var(--color-bright-dark);
-  border-color: var(--color-bright-dark);
-}
-
 .btn-secondary {
   background: transparent;
   color: var(--color-primary);
@@ -382,12 +370,13 @@ textarea:focus {
   .mobile-submit-bar a {
     display: block;
     text-align: center;
-    background: var(--color-bright);
+    background: var(--color-primary);
     color: #fff;
     text-decoration: none;
     font-weight: 600;
     padding: 13px;
     border-radius: var(--radius);
+    box-shadow: 0 -2px 10px rgba(23, 10, 12, 0.25);
   }
 
   body.has-mobile-bar {
