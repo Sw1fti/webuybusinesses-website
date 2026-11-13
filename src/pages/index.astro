@@ -75,6 +75,8 @@ const faqPreview = [
   headerVariant="transparent"
 >
   <section class="hero">
+    <div class="hero-image" aria-hidden="true"></div>
+    <div class="hero-overlay" aria-hidden="true"></div>
     <div class="hero-grain" aria-hidden="true"></div>
     <div class="container hero-inner">
       <h1>We buy businesses. Simply, quickly, and the right way.</h1>
@@ -234,9 +236,40 @@ const faqPreview = [
     min-height: 100vh;
     display: flex;
     align-items: center;
-    background: radial-gradient(circle at 20% 20%, #230f12 0%, var(--color-ink) 60%);
+    background: var(--color-ink);
     color: var(--color-ivory-text);
     overflow: hidden;
+  }
+
+  .hero-image {
+    position: absolute;
+    inset: 0;
+    background-image: url('/images/hero-manufacturing.webp');
+    background-size: cover;
+    background-position: center;
+  }
+
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      rgba(23, 10, 12, 0.96) 0%,
+      rgba(23, 10, 12, 0.88) 32%,
+      rgba(23, 10, 12, 0.55) 60%,
+      rgba(23, 10, 12, 0.3) 100%
+    );
+  }
+
+  @media (max-width: 760px) {
+    .hero-overlay {
+      background: linear-gradient(
+        180deg,
+        rgba(23, 10, 12, 0.75) 0%,
+        rgba(23, 10, 12, 0.9) 35%,
+        rgba(23, 10, 12, 0.92) 100%
+      );
+    }
   }
 
   .hero-grain {
