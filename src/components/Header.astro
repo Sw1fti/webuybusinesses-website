@@ -6,9 +6,32 @@ interface Props {
 const { transparent = false } = Astro.props;
 
 const navItems = [
-  { href: '/how-it-works', label: 'How It Works' },
-  { href: '/our-deals', label: 'Our Deals' },
-  { href: '/resources', label: 'Resources' },
+  {
+    href: '/how-it-works',
+    label: 'How It Works',
+    children: [
+      { href: '/how-it-works#process', label: 'The Process' },
+      { href: '/how-it-works#costs', label: 'What It Costs You' },
+      { href: '/how-it-works#faq', label: 'FAQ' },
+    ],
+  },
+  {
+    href: '/our-deals',
+    label: 'Our Deals',
+    children: [
+      { href: '/our-deals#examples', label: 'Examples' },
+      { href: '/our-deals#structures', label: 'Structures We Use' },
+      { href: '/our-deals#why-not-a-broker', label: 'Why Not a Broker?' },
+    ],
+  },
+  {
+    href: '/resources',
+    label: 'Resources',
+    children: [
+      { href: '/resources', label: 'All Articles' },
+      { href: '/sale-readiness-checklist', label: 'Sale Readiness Checklist' },
+    ],
+  },
 ];
 ---
 
@@ -18,7 +41,14 @@ const navItems = [
     <nav class="site-nav" aria-label="Primary">
       <ul>
         {navItems.map((item) => (
-          <li><a href={item.href}>{item.label}</a></li>
+          <li class="has-dropdown">
+            <a href={item.href}>{item.label}</a>
+            <ul class="dropdown">
+              {item.children.map((child) => (
+                <li><a href={child.href}>{child.label}</a></li>
+              ))}
+            </ul>
+          </li>
         ))}
       </ul>
     </nav>
@@ -33,7 +63,14 @@ const navItems = [
   <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile">
     <ul>
       {navItems.map((item) => (
-        <li><a href={item.href}>{item.label}</a></li>
+        <li class="mobile-nav-group">
+          <a href={item.href}>{item.label}</a>
+          <ul class="mobile-dropdown">
+            {item.children.map((child) => (
+              <li><a href={child.href}>{child.label}</a></li>
+            ))}
+          </ul>
+        </li>
       ))}
       <li><a href="/submit" class="btn btn-primary">Submit Your Business</a></li>
     </ul>
@@ -60,7 +97,7 @@ const navItems = [
   }
 
   .site-header--transparent .wordmark,
-  .site-header--transparent .site-nav a,
+  .site-header--transparent .site-nav > ul > li > a,
   .site-header--transparent .menu-toggle {
     color: var(--color-ivory-text);
   }
@@ -74,7 +111,7 @@ const navItems = [
     color: var(--color-primary);
   }
 
-  .site-header--transparent.is-scrolled .site-nav a,
+  .site-header--transparent.is-scrolled .site-nav > ul > li > a,
   .site-header--transparent.is-scrolled .menu-toggle {
     color: var(--color-charcoal);
   }
@@ -98,7 +135,7 @@ const navItems = [
     transition: color 0.3s ease;
   }
 
-  .site-nav ul {
+  .site-nav > ul {
     list-style: none;
     display: flex;
     gap: 32px;
@@ -106,16 +143,61 @@ const navItems = [
     padding: 0;
   }
 
-  .site-nav a {
+  .has-dropdown {
+    position: relative;
+  }
+
+  .site-nav > ul > li > a {
+    display: inline-block;
     color: var(--color-charcoal);
     text-decoration: none;
     font-weight: 500;
     font-size: 0.95rem;
+    padding: 10px 0;
     transition: color 0.3s ease;
   }
 
-  .site-nav a:hover {
+  .site-nav > ul > li > a:hover {
     color: var(--color-primary);
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    left: -16px;
+    min-width: 220px;
+    list-style: none;
+    margin: 0;
+    padding: 10px 0;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 12px 28px -12px rgba(23, 10, 12, 0.25);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-6px);
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0.15s ease;
+  }
+
+  .has-dropdown:hover .dropdown,
+  .has-dropdown:focus-within .dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown a {
+    display: block;
+    padding: 10px 20px;
+    color: var(--color-charcoal);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.92rem;
+    white-space: nowrap;
+  }
+
+  .dropdown a:hover {
+    color: var(--color-primary);
+    background: #efe7da;
   }
 
   .header-cta {
@@ -162,11 +244,26 @@ const navItems = [
       flex-direction: column;
       gap: 16px;
     }
-    .mobile-nav a {
+    .mobile-nav-group > a {
       color: var(--color-charcoal);
       text-decoration: none;
       font-weight: 600;
       font-size: 1.1rem;
+    }
+    .mobile-dropdown {
+      list-style: none;
+      margin: 10px 0 0;
+      padding: 0 0 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      border-left: 1px solid var(--color-border);
+    }
+    .mobile-dropdown a {
+      color: var(--color-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.98rem;
     }
     .mobile-nav a.btn-primary {
       color: #fff;

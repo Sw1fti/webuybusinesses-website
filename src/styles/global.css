@@ -2,6 +2,8 @@
   /* core palette */
   --color-primary: #7a1f2b;
   --color-primary-dark: #5e1620;
+  --color-cta: #af2c3d;
+  --color-cta-dark: #93252f;
   --color-brass: #b08d57;
   --color-brass-dim: rgba(176, 141, 87, 0.4);
 
@@ -83,6 +85,7 @@ a:hover {
 
 .section {
   padding: 96px 0;
+  scroll-margin-top: 90px;
 }
 
 .section--alt {
@@ -182,13 +185,14 @@ h2.with-rule {
 }
 
 .btn-primary {
-  background: var(--color-primary);
+  background: var(--color-cta);
+  border-color: var(--color-cta);
   color: #fff;
 }
 
 .btn-primary:hover {
-  background: var(--color-primary-dark);
-  border-color: var(--color-primary-dark);
+  background: var(--color-cta-dark);
+  border-color: var(--color-cta-dark);
   color: #fff;
 }
 
